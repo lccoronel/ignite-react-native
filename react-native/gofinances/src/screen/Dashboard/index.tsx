@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { HighlightCard } from '../../components/HighlightCard';
+
 import { 
   Container,
   Header,
@@ -9,7 +11,8 @@ import {
   UserGretting,
   UserName,
   User,
-  Icon
+  Icon,
+  HighlightCards,
 } from './styles';
 
 const screen: React.FC = () => {
@@ -28,6 +31,12 @@ const screen: React.FC = () => {
           <Icon name="power" />
         </UserWrapper>
       </Header>
+
+      <HighlightCards>
+        <HighlightCard />
+        <HighlightCard />
+        <HighlightCard />
+      </HighlightCards>
     </Container>
   );
 }
