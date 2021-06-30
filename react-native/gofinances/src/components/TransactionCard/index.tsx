@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { 
   Container, 
@@ -12,20 +11,41 @@ import {
   Date,
 } from './styles';
 
-export const TransactionCard: React.FC = () => {
+export interface TransactionData {
+  id: string;
+  type: 'positive' | 'negative';
+  title: string;
+  amount: string;
+  category: {
+    name: string;
+    icon: string;
+  };
+  date: string;
+}
+
+interface TransactionCardProps {
+  data: TransactionData;
+}
+
+export const TransactionCard: React.FC<TransactionCardProps> = ({ 
+  data
+}) => {
   return (
     <Container>
-      <Title>Dev de site</Title>
+      <Title>{data.title}</Title>
 
-      <Amount>RS$ 1.000,00</Amount>
+      <Amount type={data.type}>
+        {data.type === 'negative' && '- '}
+        {data.amount}
+      </Amount>
       
       <Footer>
         <Category>
-          <Icon name="dollar-sign" />
-          <CategoryName>Vendas</CategoryName>
+          <Icon name={data.category.icon} />
+          <CategoryName>{data.category.name}</CategoryName>
         </Category>
 
-        <Date>13/04/2020</Date>
+        <Date>{data.date}</Date>
       </Footer>
     </Container>    
   );

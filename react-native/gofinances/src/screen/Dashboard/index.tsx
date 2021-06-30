@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard } from '../../components/TransactionCard';
+import { TransactionCard, TransactionData } from '../../components/TransactionCard';
 
 import { 
   Container,
@@ -16,9 +16,37 @@ import {
   HighlightCards,
   Transactions,
   Title,
+  TransactionsList
 } from './styles';
 
 const screen: React.FC = () => {
+  const data: TransactionData[] = [
+    {
+      id: '1',
+      type: 'negative',
+      title: "dev site",
+      amount:"R$ 1.000,00",
+      category: { name: 'vendas', icon: 'dollar-sign' },
+      date:"13/12/2020",
+    },
+    {
+      id: '2',
+      type: 'positive',
+      title: "dev site",
+      amount:"R$ 1.000,00",
+      category: { name: 'vendas', icon: 'dollar-sign' },
+      date:"13/12/2020",
+    },
+    {
+      id: '3',
+      type: 'negative',
+      title: "dev site",
+      amount:"R$ 1.000,00",
+      category: { name: 'vendas', icon: 'dollar-sign' },
+      date:"13/12/2020",
+    },
+  ];
+
   return (
     <Container>
       <Header>
@@ -59,7 +87,14 @@ const screen: React.FC = () => {
       <Transactions>
         <Title>Listagem</Title>
 
-        <TransactionCard />
+        <TransactionsList
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <TransactionCard data={item} />
+          )}
+        />
+
       </Transactions>
     </Container>
   );
