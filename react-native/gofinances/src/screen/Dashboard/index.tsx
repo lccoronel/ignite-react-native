@@ -19,7 +19,7 @@ import {
   TransactionsList
 } from './styles';
 
-const screen: React.FC = () => {
+const Dashboard: React.FC = () => {
   const data: TransactionData[] = [
     {
       id: '1',
@@ -100,4 +100,4 @@ const screen: React.FC = () => {
   );
 }
 
-export default screen;
+export default Dashboard;
