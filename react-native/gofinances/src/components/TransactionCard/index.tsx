@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { 
-  Container, 
+import {
+  Container,
   Title,
   Amount,
   Footer,
@@ -27,9 +27,7 @@ interface TransactionCardProps {
   data: TransactionData;
 }
 
-export const TransactionCard: React.FC<TransactionCardProps> = ({ 
-  data
-}) => {
+export const TransactionCard: React.FC<TransactionCardProps> = ({ data }) => {
   return (
     <Container>
       <Title>{data.title}</Title>
@@ -38,7 +36,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
         {data.type === 'negative' && '- '}
         {data.amount}
       </Amount>
-      
+
       <Footer>
         <Category>
           <Icon name={data.category.icon} />
@@ -47,6 +45,6 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
 
         <Date>{data.date}</Date>
       </Footer>
-    </Container>    
+    </Container>
   );
-}
+};

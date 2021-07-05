@@ -1,16 +1,16 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
-import theme from '../../global/styles/theme';
+
+import * as globalTheme from '../../global/styles/theme';
 
 interface TypeProps {
   type: 'up' | 'down' | 'total';
 }
 
 export const Container = styled.View<TypeProps>`
-  background-color: ${({ theme, type }) => (
-    type === 'total' ? theme.colors.secondary : theme.colors.shape
-  )};
+  background-color: ${({ theme, type }) =>
+    type === 'total' ? theme.colors.secondary : theme.colors.shape};
   width: ${RFValue(300)}px;
   border-radius: 5px;
   padding: 19px 23px;
@@ -26,15 +26,14 @@ export const Header = styled.View`
 export const Title = styled.Text<TypeProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(14)}px;
-  color: ${({ theme, type }) => (
-    type === 'total' ? theme.colors.shape : theme.colors.text_dark
-  )};
+  color: ${({ theme, type }) =>
+    type === 'total' ? theme.colors.shape : theme.colors.text_dark};
 `;
 
 const iconColors = {
-  up: theme.colors.success,
-  down: theme.colors.attention,
-  total: theme.colors.shape
+  up: globalTheme.default.colors.success,
+  down: globalTheme.default.colors.attention,
+  total: globalTheme.default.colors.shape,
 };
 
 export const Icon = styled(Feather)<TypeProps>`
@@ -47,16 +46,14 @@ export const Footer = styled.View``;
 export const Amount = styled.Text<TypeProps>`
   font-family: ${({ theme }) => theme.fonts.medium};
   font-size: ${RFValue(32)}px;
-  color: ${({ theme, type }) => (
-    type === 'total' ? theme.colors.shape : theme.colors.text_dark
-  )};
+  color: ${({ theme, type }) =>
+    type === 'total' ? theme.colors.shape : theme.colors.text_dark};
   margin-top: 20px;
 `;
 
 export const LastTransactions = styled.Text<TypeProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(12)}px;
-  color: ${({ theme, type }) => (
-    type === 'total' ? theme.colors.shape : theme.colors.text_dark
-  )};
+  color: ${({ theme, type }) =>
+    type === 'total' ? theme.colors.shape : theme.colors.text_dark};
 `;
