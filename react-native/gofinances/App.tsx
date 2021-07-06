@@ -4,27 +4,27 @@ import {
   useFonts,
   Poppins_400Regular,
   Poppins_500Medium,
-  Poppins_700Bold
- } from '@expo-google-fonts/poppins';
- import AppLoading from 'expo-app-loading';
+  Poppins_700Bold,
+} from '@expo-google-fonts/poppins';
+import AppLoading from 'expo-app-loading';
 
-import Register from './src/screen/Register';
+import CategorySelect from './src/screen/CategorySelect';
 import theme from './src/global/styles/theme';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
-    Poppins_700Bold
+    Poppins_700Bold,
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <AppLoading />;
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Register />
+      <CategorySelect />
     </ThemeProvider>
   );
 }
