@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Modal } from 'react-native';
+import { useForm } from 'react-hook-form';
 
-import { useState } from 'react';
-import { Input } from '../../components/Forms/Input';
+import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
-import { CategorySelect } from '../../components/Forms/CategorySelect';
+import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
+import CategorySelect from '../CategorySelect';
 import {
   Container,
   Header,
@@ -14,11 +16,31 @@ import {
   TransactionTypes,
 } from './styles';
 
+interface FormData {
+  name: string;
+  amount: string;
+}
+
 const Register: React.FC = () => {
+  const { control, handleSubmit } = useForm();
+
   const [transactionType, setTransactiontype] = useState('');
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [category, setCategory] = useState({
+    key: 'category',
+    name: 'Categoria',
+  });
 
   function handleTransactionTypeButtonSelect(type: 'up' | 'down') {
     setTransactiontype(type);
+  }
+
+  function handleSelectCategoryModal() {
+    setCategoryModalOpen(oldValue => !oldValue);
+  }
+
+  function handleRegister(form: FormData) {
+    console.log(form);
   }
 
   return (
@@ -29,8 +51,8 @@ const Register: React.FC = () => {
 
       <Form>
         <Fields>
-          <Input placeholder="Nome" />
-          <Input placeholder="Preço" />
+          <InputForm name="name" control={control} placeholder="Nome" />
+          <InputForm name="amount" control={control} placeholder="Preço" />
 
           <TransactionTypes>
             <TransactionTypeButton
@@ -47,11 +69,22 @@ const Register: React.FC = () => {
             />
           </TransactionTypes>
 
-          <CategorySelect title="Categoria" />
+          <CategorySelectButton
+            title={category.name}
+            onPress={handleSelectCategoryModal}
+          />
         </Fields>
 
-        <Button title="Enviar" />
+        <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
       </Form>
+
+      <Modal visible={categoryModalOpen} animationType="slide">
+        <CategorySelect
+          closeSelectCategory={handleSelectCategoryModal}
+          category={category}
+          setCategory={setCategory}
+        />
+      </Modal>
     </Container>
   );
 };
