@@ -1,9 +1,12 @@
 import React from 'react';
 
 import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard, TransactionData } from '../../components/TransactionCard';
+import {
+  TransactionCard,
+  TransactionData,
+} from '../../components/TransactionCard';
 
-import { 
+import {
   Container,
   Header,
   UserWrapper,
@@ -13,10 +16,11 @@ import {
   UserName,
   User,
   Icon,
+  LogoutButton,
   HighlightCards,
   Transactions,
   Title,
-  TransactionsList
+  TransactionsList,
 } from './styles';
 
 const Dashboard: React.FC = () => {
@@ -24,26 +28,26 @@ const Dashboard: React.FC = () => {
     {
       id: '1',
       type: 'negative',
-      title: "dev site",
-      amount:"R$ 1.000,00",
+      title: 'dev site',
+      amount: 'R$ 1.000,00',
       category: { name: 'vendas', icon: 'dollar-sign' },
-      date:"13/12/2020",
+      date: '13/12/2020',
     },
     {
       id: '2',
       type: 'positive',
-      title: "dev site",
-      amount:"R$ 1.000,00",
+      title: 'dev site',
+      amount: 'R$ 1.000,00',
       category: { name: 'vendas', icon: 'dollar-sign' },
-      date:"13/12/2020",
+      date: '13/12/2020',
     },
     {
       id: '3',
       type: 'negative',
-      title: "dev site",
-      amount:"R$ 1.000,00",
+      title: 'dev site',
+      amount: 'R$ 1.000,00',
       category: { name: 'vendas', icon: 'dollar-sign' },
-      date:"13/12/2020",
+      date: '13/12/2020',
     },
   ];
 
@@ -52,35 +56,41 @@ const Dashboard: React.FC = () => {
       <Header>
         <UserWrapper>
           <UserInfo>
-            <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/54275445?v=4' }} />
+            <Photo
+              source={{
+                uri: 'https://avatars.githubusercontent.com/u/54275445?v=4',
+              }}
+            />
             <User>
               <UserGretting>Olá, </UserGretting>
               <UserName>Lucas Coronel</UserName>
             </User>
           </UserInfo>
 
-          <Icon name="power" />
+          <LogoutButton>
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
 
       <HighlightCards>
-        <HighlightCard 
+        <HighlightCard
           type="up"
-          title="Entradas" 
-          amount="R$ 1.000,00" 
-          lastTransaction="ultima entrada 13 de abril" 
+          title="Entradas"
+          amount="R$ 1.000,00"
+          lastTransaction="ultima entrada 13 de abril"
         />
-        <HighlightCard 
+        <HighlightCard
           type="down"
-          title="Saidas" 
-          amount="R$ 1.000,00" 
-          lastTransaction="ultima entrada 13 de abril" 
+          title="Saidas"
+          amount="R$ 1.000,00"
+          lastTransaction="ultima entrada 13 de abril"
         />
-        <HighlightCard 
+        <HighlightCard
           type="total"
-          title="Total" 
-          amount="R$ 1.000,00" 
-          lastTransaction="ultima entrada 13 de abril" 
+          title="Total"
+          amount="R$ 1.000,00"
+          lastTransaction="ultima entrada 13 de abril"
         />
       </HighlightCards>
 
@@ -90,14 +100,11 @@ const Dashboard: React.FC = () => {
         <TransactionsList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TransactionCard data={item} />
-          )}
+          renderItem={({ item }) => <TransactionCard data={item} />}
         />
-
       </Transactions>
     </Container>
   );
-}
+};
 
 export default Dashboard;
