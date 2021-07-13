@@ -3,6 +3,9 @@ import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
+import { useNavigation } from '@react-navigation/native';
 
 import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
@@ -35,8 +38,10 @@ const Register: React.FC = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const { navigate } = useNavigation();
 
   const [transactionType, setTransactiontype] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -53,17 +58,42 @@ const Register: React.FC = () => {
     setCategoryModalOpen(oldValue => !oldValue);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if (!transactionType) return Alert.alert('Selecione um tipo de transacao');
 
     if (category.key === 'key') return Alert.alert('Selecione a categoria');
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
       category: category.key,
+      date: new Date(),
     };
+
+    try {
+      const data = await AsyncStorage.getItem('@gofinances:transactions');
+      const currentData = data ? JSON.parse(data) : [];
+      const dataFormatted = [...currentData, newTransaction];
+
+      await AsyncStorage.setItem(
+        '@gofinances:transactions',
+        JSON.stringify(dataFormatted),
+      );
+
+      reset();
+      setTransactiontype('');
+      setCategory({
+        key: 'category',
+        name: 'Categoria',
+      });
+
+      navigate('Listagem');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Não foi possivel salvar');
+    }
   }
 
   return (
