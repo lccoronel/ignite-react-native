@@ -8,7 +8,7 @@ import {
 } from 'react-native-iphone-x-helper';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { TransactionData } from '../../components/TransactionCard';
+import { TransactionDataProps } from '../../components/TransactionCard';
 
 export const Container = styled.View`
   flex: 1;
@@ -91,8 +91,14 @@ export const Title = styled.Text`
 `;
 
 export const TransactionsList = styled(
-  FlatList as new () => FlatList<TransactionData>,
+  FlatList as new () => FlatList<TransactionDataProps>,
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { paddingBottom: getBottomSpace() },
 })``;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
