@@ -25,15 +25,36 @@ import {
   TransactionsList,
 } from './styles';
 
+interface HighLightData {
+  amount: string;
+}
+
+interface HighLightProps {
+  entries: HighLightData;
+  expensive: HighLightData;
+  total: string;
+}
+
 const Dashboard: React.FC = () => {
-  const [data, setData] = useState<TransactionDataProps[]>([]);
+  const [transactions, setTransactions] = useState<TransactionDataProps[]>([]);
+  const [hidhLight, setHighLight] = useState<HighLightProps>(
+    {} as HighLightProps,
+  );
+  const [isLoaging, setLoading] = useState(true);
 
   async function loadTransaction() {
     const response = await AsyncStorage.getItem('@gofinances:transactions');
-    const transactions = response ? JSON.parse(response) : [];
+    const listTransactions = response ? JSON.parse(response) : [];
 
-    const transactionsFormatted: TransactionDataProps[] = transactions.map(
+    let entriesTotal = 0;
+    let expensiveTotal = 0;
+
+    const transactionsFormatted: TransactionDataProps[] = listTransactions.map(
       (item: TransactionDataProps) => {
+        item.type === 'positive'
+          ? (entriesTotal += Number(item.amount))
+          : (expensiveTotal += Number(item.amount));
+
         const amount = Number(item.amount).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -56,7 +77,27 @@ const Dashboard: React.FC = () => {
       },
     );
 
-    setData(transactionsFormatted);
+    const total = entriesTotal - expensiveTotal;
+
+    setTransactions(transactionsFormatted);
+    setHighLight({
+      entries: {
+        amount: entriesTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      },
+      expensive: {
+        amount: expensiveTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      },
+      total: total.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+    });
   }
 
   useEffect(() => {
@@ -95,19 +136,19 @@ const Dashboard: React.FC = () => {
         <HighlightCard
           type="up"
           title="Entradas"
-          amount="R$ 1.000,00"
+          amount={hidhLight.entries.amount}
           lastTransaction="ultima entrada 13 de abril"
         />
         <HighlightCard
           type="down"
           title="Saidas"
-          amount="R$ 1.000,00"
+          amount={hidhLight.expensive.amount}
           lastTransaction="ultima entrada 13 de abril"
         />
         <HighlightCard
           type="total"
           title="Total"
-          amount="R$ 1.000,00"
+          amount={hidhLight.total}
           lastTransaction="ultima entrada 13 de abril"
         />
       </HighlightCards>
@@ -116,7 +157,7 @@ const Dashboard: React.FC = () => {
         <Title>Listagem</Title>
 
         <TransactionsList
-          data={data}
+          data={transactions}
           keyExtractor={item => item.id}
           renderItem={({ item }) => <TransactionCard data={item} />}
         />
