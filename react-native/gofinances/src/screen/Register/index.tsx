@@ -50,7 +50,7 @@ const Register: React.FC = () => {
     name: 'Categoria',
   });
 
-  function handleTransactionTypeButtonSelect(type: 'up' | 'down') {
+  function handleTransactionTypeButtonSelect(type: 'positive' | 'negative') {
     setTransactiontype(type);
   }
 
@@ -67,7 +67,7 @@ const Register: React.FC = () => {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date(),
     };
@@ -91,7 +91,6 @@ const Register: React.FC = () => {
 
       navigate('Listagem');
     } catch (error) {
-      console.log(error);
       Alert.alert('Não foi possivel salvar');
     }
   }
@@ -125,14 +124,14 @@ const Register: React.FC = () => {
               <TransactionTypeButton
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeButtonSelect('up')}
-                isActive={transactionType === 'up'}
+                onPress={() => handleTransactionTypeButtonSelect('positive')}
+                isActive={transactionType === 'positive'}
               />
               <TransactionTypeButton
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeButtonSelect('down')}
-                isActive={transactionType === 'down'}
+                onPress={() => handleTransactionTypeButtonSelect('negative')}
+                isActive={transactionType === 'negative'}
               />
             </TransactionTypes>
 
