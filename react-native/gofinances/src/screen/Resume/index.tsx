@@ -1,10 +1,15 @@
 import React from 'react';
-import { View } from 'react-native';
 
-// import { Container } from './styles';
+import Header from '../../components/Header';
+
+import { Container } from './styles';
 
 const Resume: React.FC = () => {
-  return <View />;
+  return (
+    <Container>
+      <Header title="Resumo por categoria" />
+    </Container>
+  );
 };
 
 export default Resume;
