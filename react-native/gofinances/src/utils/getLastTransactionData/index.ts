@@ -4,6 +4,10 @@ export function getLastTransactionDate(
   listTransactions: TransactionDataProps[],
   type: 'positive' | 'negative',
 ): string {
+  if (!listTransactions.length) {
+    return 'sem transacoes';
+  }
+
   const lastTransactions = Math.max.apply(
     Math,
     listTransactions
