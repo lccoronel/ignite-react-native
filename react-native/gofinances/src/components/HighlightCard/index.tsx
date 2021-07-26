@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { 
+import {
   Container,
   Header,
   Title,
   Icon,
   Footer,
   Amount,
-  LastTransactions 
+  LastTransactions,
 } from './styles';
 
 interface HighlightCardProps {
@@ -20,12 +20,12 @@ interface HighlightCardProps {
 const icon = {
   up: 'arrow-up-circle',
   down: 'arrow-down-circle',
-  total: 'dollar-sign'
-}
+  total: 'dollar-sign',
+};
 
-export const HighlightCard: React.FC<HighlightCardProps> = ({ 
-  title, 
-  amount, 
+export const HighlightCard: React.FC<HighlightCardProps> = ({
+  title,
+  amount,
   lastTransaction,
   type,
 }) => {
@@ -38,8 +38,12 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({
 
       <Footer>
         <Amount type={type}>{amount}</Amount>
-        <LastTransactions type={type}>{lastTransaction}</LastTransactions>
+        <LastTransactions type={type}>
+          {type !== 'total'
+            ? `Ultima transação foi no dia ${lastTransaction}`
+            : lastTransaction}
+        </LastTransactions>
       </Footer>
     </Container>
   );
-}
+};

@@ -29,6 +29,7 @@
       "prettier"
   ],
   "rules": {
+    "prefer-spread": "off",
     "prettier/prettier": "error",
     "no-use-before-define": "off",
     "consistent-return": "off",

@@ -27,15 +27,17 @@ import {
   TransactionsList,
   LoadContainer,
 } from './styles';
+import { getLastTransactionDate } from '../../utils/getLastTransactionData';
 
 interface HighLightData {
   amount: string;
+  lastTransaction: string;
 }
 
 interface HighLightProps {
   entries: HighLightData;
   expensive: HighLightData;
-  total: string;
+  total: HighLightData;
 }
 
 const Dashboard: React.FC = () => {
@@ -91,17 +93,25 @@ const Dashboard: React.FC = () => {
           style: 'currency',
           currency: 'BRL',
         }),
+        lastTransaction: getLastTransactionDate(listTransactions, 'positive'),
       },
       expensive: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
+        lastTransaction: getLastTransactionDate(listTransactions, 'negative'),
       },
-      total: total.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }),
+      total: {
+        amount: total.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        lastTransaction: `Do dia 1 ao dia ${getLastTransactionDate(
+          listTransactions,
+          'negative',
+        )}`,
+      },
     });
     setLoading(false);
   }
@@ -149,19 +159,19 @@ const Dashboard: React.FC = () => {
               type="up"
               title="Entradas"
               amount={hidhLight.entries.amount}
-              lastTransaction="ultima entrada 13 de abril"
+              lastTransaction={hidhLight.entries.lastTransaction}
             />
             <HighlightCard
               type="down"
               title="Saidas"
               amount={hidhLight.expensive.amount}
-              lastTransaction="ultima entrada 13 de abril"
+              lastTransaction={hidhLight.expensive.lastTransaction}
             />
             <HighlightCard
               type="total"
               title="Total"
-              amount={hidhLight.total}
-              lastTransaction="ultima entrada 13 de abril"
+              amount={hidhLight.total.amount}
+              lastTransaction={hidhLight.total.lastTransaction}
             />
           </HighlightCards>
 
