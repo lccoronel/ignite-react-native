@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
   const [hidhLight, setHighLight] = useState<HighLightProps>(
     {} as HighLightProps,
   );
-  const [isLoaging, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   async function loadTransaction() {
     const response = await AsyncStorage.getItem('@gofinances:transactions');
@@ -128,7 +128,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      {isLoaging ? (
+      {isLoading ? (
         <LoadContainer>
           <ActivityIndicator color={theme.colors.primary} size="large" />
         </LoadContainer>
