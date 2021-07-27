@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
@@ -8,6 +8,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { addMonths, subMonths, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../components/Header';
 import HistoryCard from '../../components/HistoryCard';
 import { TransactionDataProps } from '../../components/TransactionCard';
@@ -38,7 +39,7 @@ const Resume: React.FC = () => {
 
   const [listCategories, setListCategories] = useState<TotalCategoryData[]>([]);
   const [selectedDate, SetSelectedDate] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleDataChangge(action: 'next' | 'previous') {
     if (action === 'next') {
@@ -49,6 +50,7 @@ const Resume: React.FC = () => {
   }
 
   async function loadData() {
+    setIsLoading(true);
     const response = await AsyncStorage.getItem('@gofinances:transactions');
     const listTransactions: TransactionDataProps[] = response
       ? JSON.parse(response)
@@ -101,9 +103,11 @@ const Resume: React.FC = () => {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    loadData();
-  }, [selectedDate]);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [selectedDate]),
+  );
 
   return (
     <Container>
