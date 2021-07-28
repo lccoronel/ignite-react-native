@@ -4,6 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
+import SocialButton from '../../components/SocialButton';
 import {
   Container,
   Header,
@@ -11,6 +12,7 @@ import {
   Title,
   SignInTitle,
   Footer,
+  FooterWrapper,
 } from './styles';
 
 const SignIn: React.FC = () => {
@@ -32,7 +34,12 @@ const SignIn: React.FC = () => {
         <SignInTitle>Faça o seu login com uma das contas abaixo</SignInTitle>
       </Header>
 
-      <Footer />
+      <Footer>
+        <FooterWrapper>
+          <SocialButton title="Entrar com Google" svg={GoogleSvg} />
+          <SocialButton title="Entrar com Apple" svg={AppleSvg} />
+        </FooterWrapper>
+      </Footer>
     </Container>
   );
 };
