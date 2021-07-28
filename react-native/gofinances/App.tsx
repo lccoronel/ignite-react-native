@@ -16,6 +16,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { AppRoutes } from './src/routes/app.routes';
 import theme from './src/global/styles/theme';
+import SignIn from './src/screen/SignIn';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -32,7 +33,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <StatusBar barStyle="light-content" />
-        <AppRoutes />
+        <SignIn />
       </NavigationContainer>
     </ThemeProvider>
   );
