@@ -17,7 +17,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppRoutes } from './src/routes/app.routes';
 import theme from './src/global/styles/theme';
 import SignIn from './src/screen/SignIn';
-import { AuthContext } from './src/AuthContext';
+import { AuthProvider } from './src/hooks/auth';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -35,9 +35,9 @@ const App: React.FC = () => {
       <NavigationContainer>
         <StatusBar barStyle="light-content" />
 
-        <AuthContext.Provider value={[]}>
+        <AuthProvider>
           <SignIn />
-        </AuthContext.Provider>
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );
