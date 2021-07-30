@@ -14,6 +14,7 @@ export interface User {
 export interface AuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
+  signInWithApple(): Promise<void>;
 }
 
 export interface AuthorizathionResponse {
