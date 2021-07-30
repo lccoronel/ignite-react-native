@@ -14,17 +14,18 @@ import {
 import AppLoading from 'expo-app-loading';
 
 import theme from './src/global/styles/theme';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 import { Routes } from './src/routes';
 
 const App: React.FC = () => {
+  const { userStorageLoading } = useAuth();
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold,
   });
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || userStorageLoading) {
     return <AppLoading />;
   }
 

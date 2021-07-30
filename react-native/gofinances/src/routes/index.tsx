@@ -7,7 +7,6 @@ import { useAuth } from '../hooks/auth';
 
 export function Routes(): JSX.Element {
   const { user } = useAuth();
-  console.log(user);
 
   return (
     <NavigationContainer>

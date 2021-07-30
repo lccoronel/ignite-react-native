@@ -28,6 +28,7 @@ import {
   LoadContainer,
 } from './styles';
 import { getLastTransactionDate } from '../../utils/getLastTransactionData';
+import { useAuth } from '../../hooks/auth';
 
 interface HighLightData {
   amount: string;
@@ -42,6 +43,7 @@ interface HighLightProps {
 
 const Dashboard: React.FC = () => {
   const theme = useTheme();
+  const { signOut } = useAuth();
 
   const [transactions, setTransactions] = useState<TransactionDataProps[]>([]);
   const [hidhLight, setHighLight] = useState<HighLightProps>(
@@ -148,7 +150,7 @@ const Dashboard: React.FC = () => {
                 </User>
               </UserInfo>
 
-              <LogoutButton>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
