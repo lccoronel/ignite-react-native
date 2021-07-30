@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState } from 'react';
 import * as AuthSession from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useEffect } from 'react';
 import {
   AuthContextData,
   AuthorizathionResponse,
@@ -12,8 +15,20 @@ const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   const [user, setUser] = useState<User>({} as User);
+  const [userStorageLoading, setuserStorageLoading] = useState(true);
+
   const { CLIENT_ID } = process.env;
   const { REDIRECT_URI } = process.env;
+
+  useEffect(() => {
+    AsyncStorage.getItem('@gofinances:user').then(response => {
+      if (response) {
+        const userlogged = JSON.parse(response) as User;
+        setUser(userlogged);
+      }
+    });
+    setuserStorageLoading(false);
+  }, []);
 
   async function signInWithGoogle() {
     try {
@@ -30,12 +45,20 @@ function AuthProvider({ children }: AuthProviderProps): JSX.Element {
         );
         const userInfo = await response.json();
 
-        setUser({
-          id: userInfo.id,
-          email: userInfo.email,
-          name: userInfo.given_name,
-          photo: userInfo.picture,
-        });
+        if (userInfo) {
+          const userLogged = {
+            id: userInfo.id,
+            email: userInfo.email,
+            name: userInfo.given_name,
+            photo: userInfo.picture,
+          };
+
+          setUser(userLogged);
+          await AsyncStorage.setItem(
+            '@gofinances:user',
+            JSON.stringify(userLogged),
+          );
+        }
       }
     } catch (error) {
       throw new Error(error);
@@ -51,8 +74,6 @@ function AuthProvider({ children }: AuthProviderProps): JSX.Element {
         ],
       });
 
-      console.log(credential);
-
       if (credential) {
         const userLogged = {
           id: String(credential.user),
@@ -62,10 +83,19 @@ function AuthProvider({ children }: AuthProviderProps): JSX.Element {
         };
 
         setUser(userLogged);
+        await AsyncStorage.setItem(
+          '@gofinances:user',
+          JSON.stringify(userLogged),
+        );
       }
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async function signOut() {
+    setUser({} as User);
+    await AsyncStorage.removeItem('@gofinances:user');
   }
 
   return (
