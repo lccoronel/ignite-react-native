@@ -42,8 +42,8 @@ interface HighLightProps {
 }
 
 const Dashboard: React.FC = () => {
-  const theme = useTheme();
-  const { signOut } = useAuth();
+  const { colors } = useTheme();
+  const { signOut, user } = useAuth();
 
   const [transactions, setTransactions] = useState<TransactionDataProps[]>([]);
   const [hidhLight, setHighLight] = useState<HighLightProps>(
@@ -132,21 +132,17 @@ const Dashboard: React.FC = () => {
     <Container>
       {isLoading ? (
         <LoadContainer>
-          <ActivityIndicator color={theme.colors.primary} size="large" />
+          <ActivityIndicator color={colors.primary} size="large" />
         </LoadContainer>
       ) : (
         <>
           <Header>
             <UserWrapper>
               <UserInfo>
-                <Photo
-                  source={{
-                    uri: 'https://avatars.githubusercontent.com/u/54275445?v=4',
-                  }}
-                />
+                <Photo source={{ uri: user.photo }} />
                 <User>
                   <UserGretting>Olá, </UserGretting>
-                  <UserName>Lucas Coronel</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 
