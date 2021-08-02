@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
@@ -13,6 +13,7 @@ import Header from '../../components/Header';
 import HistoryCard from '../../components/HistoryCard';
 import { TransactionDataProps } from '../../components/TransactionCard';
 import { categories } from '../../utils/categories';
+import { useAuth } from '../../hooks/auth';
 import {
   Container,
   Content,
@@ -34,6 +35,7 @@ interface TotalCategoryData {
 }
 
 const Resume: React.FC = () => {
+  const { user } = useAuth();
   const { colors } = useTheme();
   const bottomTabHeight = useBottomTabBarHeight();
 
@@ -51,7 +53,9 @@ const Resume: React.FC = () => {
 
   async function loadData() {
     setIsLoading(true);
-    const response = await AsyncStorage.getItem('@gofinances:transactions');
+    const dataKey = `@gofinances:transactions${user.id}`;
+
+    const response = await AsyncStorage.getItem(dataKey);
     const listTransactions: TransactionDataProps[] = response
       ? JSON.parse(response)
       : [];

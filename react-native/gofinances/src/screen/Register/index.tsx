@@ -11,6 +11,7 @@ import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
+import { useAuth } from '../../hooks/auth';
 import Header from '../../components/Header';
 import CategorySelect from '../CategorySelect';
 import { Container, Form, Fields, TransactionTypes } from './styles';
@@ -29,6 +30,7 @@ const schema = Yup.object().shape({
 });
 
 const Register: React.FC = () => {
+  const { user } = useAuth();
   const {
     control,
     handleSubmit,
@@ -67,14 +69,13 @@ const Register: React.FC = () => {
     };
 
     try {
-      const data = await AsyncStorage.getItem('@gofinances:transactions');
+      const dataKey = `@gofinances:transactions${user.id}`;
+
+      const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
       const dataFormatted = [...currentData, newTransaction];
 
-      await AsyncStorage.setItem(
-        '@gofinances:transactions',
-        JSON.stringify(dataFormatted),
-      );
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
 
       reset();
       setTransactiontype('');

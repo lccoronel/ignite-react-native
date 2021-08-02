@@ -52,7 +52,8 @@ const Dashboard: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
 
   async function loadTransaction() {
-    const response = await AsyncStorage.getItem('@gofinances:transactions');
+    const dataKey = `@gofinances:transactions${user.id}`;
+    const response = await AsyncStorage.getItem(dataKey);
     const listTransactions = response ? JSON.parse(response) : [];
 
     let entriesTotal = 0;
