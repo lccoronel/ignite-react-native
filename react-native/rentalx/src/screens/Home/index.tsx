@@ -3,9 +3,20 @@ import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import Logo from '../../assets/logo.svg';
+import Car from '../../components/Car';
+import { ICar } from '../../dtos/Car';
 import { Container, Header, TotalCars } from './styles';
 
 const Home: React.FC = () => {
+  const data: ICar = {
+    brand: 'Audi',
+    name: 'RS 5 coupe',
+    rent: {
+      period: 'por dia',
+      price: '120,00',
+    },
+  };
+
   return (
     <Container>
       <StatusBar
@@ -13,11 +24,14 @@ const Home: React.FC = () => {
         backgroundColor="transparent"
         translucent
       />
+
       <Header>
         <Logo width={RFValue(108)} height={RFValue(12)} />
 
         <TotalCars>Total de 12 carros</TotalCars>
       </Header>
+
+      <Car data={data} />
     </Container>
   );
 };
