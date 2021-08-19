@@ -7,7 +7,9 @@ import {
 } from '@expo-google-fonts/archivo';
 import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
+import { ThemeProvider } from 'styled-components/native';
 
+import theme from './styles/theme';
 import Home from './screens/Home';
 
 const App: React.FC = () => {
@@ -23,7 +25,11 @@ const App: React.FC = () => {
     return <AppLoading />;
   }
 
-  return <Home />;
+  return (
+    <ThemeProvider theme={theme}>
+      <Home />
+    </ThemeProvider>
+  );
 };
 
 export default App;

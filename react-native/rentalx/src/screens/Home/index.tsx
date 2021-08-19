@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Container, Title } from './styles';
+import { Container, Header } from './styles';
 
 const Home: React.FC = () => {
   return (
     <Container>
-      <Title>Home</Title>
+      <Header />
     </Container>
   );
 };
