@@ -1,9 +1,13 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { Container, Header } from './styles';
 
 const CarDetails: React.FC = () => {
-  return <Container />;
+  return (
+    <Container>
+      <Header />
+    </Container>
+  );
 };
 
 export default CarDetails;
