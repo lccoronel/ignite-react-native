@@ -5,7 +5,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import Logo from '../../assets/logo.svg';
 import Car from '../../components/Car';
 import { ICar } from '../../dtos/Car';
-import { Container, Header, TotalCars } from './styles';
+import { Container, Header, TotalCars, CarList } from './styles';
 
 const Home: React.FC = () => {
   const data: ICar = {
@@ -31,7 +31,11 @@ const Home: React.FC = () => {
         <TotalCars>Total de 12 carros</TotalCars>
       </Header>
 
-      <Car data={data} />
+      <CarList
+        data={[1, 2, 3]}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <Car data={data} key={item} />}
+      />
     </Container>
   );
 };

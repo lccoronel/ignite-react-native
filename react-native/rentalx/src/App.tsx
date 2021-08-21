@@ -10,7 +10,7 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from './styles/theme';
-import Home from './screens/Home';
+import CarDetails from './screens/CarDetails';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <CarDetails />
     </ThemeProvider>
   );
 };
