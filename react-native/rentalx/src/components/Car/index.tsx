@@ -14,7 +14,7 @@ import {
   Period,
   Price,
   Type,
-  Carimage,
+  CarImage,
 } from './styles';
 
 const Car: React.FC<ICarProps> = ({ data }) => {
@@ -36,7 +36,7 @@ const Car: React.FC<ICarProps> = ({ data }) => {
         </About>
       </Details>
 
-      <Carimage source={audiPNG} resizeMode="contain" />
+      <CarImage source={audiPNG} resizeMode="contain" />
     </Container>
   );
 };
