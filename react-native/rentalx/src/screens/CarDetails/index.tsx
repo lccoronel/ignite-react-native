@@ -2,6 +2,14 @@ import React from 'react';
 
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
+import Accessory from '../../components/Accessory';
+
+import SpeedSvg from '../../assets/speed.svg';
+import AccelerationSvg from '../../assets/acceleration.svg';
+import ForceSvg from '../../assets/force.svg';
+import GasolineSvg from '../../assets/gasoline.svg';
+import ExchangeSvg from '../../assets/exchange.svg';
+import PeopleSvg from '../../assets/people.svg';
 
 import {
   Container,
@@ -16,6 +24,7 @@ import {
   Period,
   Price,
   About,
+  Accessories,
 } from './styles';
 
 const CarDetails: React.FC = () => {
@@ -45,6 +54,15 @@ const CarDetails: React.FC = () => {
             <Price>RS 500</Price>
           </Rent>
         </Detail>
+
+        <Accessories>
+          <Accessory icon={SpeedSvg} name="380km/h" />
+          <Accessory icon={AccelerationSvg} name="3.2s" />
+          <Accessory icon={ForceSvg} name="800 HP" />
+          <Accessory icon={GasolineSvg} name="Gasolina" />
+          <Accessory icon={ExchangeSvg} name="Auto" />
+          <Accessory icon={PeopleSvg} name="2 pessoas" />
+        </Accessories>
 
         <About>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex,
