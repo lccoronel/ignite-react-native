@@ -3,7 +3,20 @@ import React from 'react';
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 
-import { Container, Header, CarImages } from './styles';
+import {
+  Container,
+  Header,
+  CarImages,
+  Content,
+  Detail,
+  Description,
+  Brand,
+  Name,
+  Rent,
+  Period,
+  Price,
+  About,
+} from './styles';
 
 const CarDetails: React.FC = () => {
   return (
@@ -19,6 +32,27 @@ const CarDetails: React.FC = () => {
           ]}
         />
       </CarImages>
+
+      <Content>
+        <Detail>
+          <Description>
+            <Brand>Larborghini</Brand>
+            <Name>Huracan</Name>
+          </Description>
+
+          <Rent>
+            <Period>Ao dia</Period>
+            <Price>RS 500</Price>
+          </Rent>
+        </Detail>
+
+        <About>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex,
+          aspernatur fugit aliquam, voluptatem expedita, reiciendis aliquid qui
+          vel totam quas repellendus laudantium sit deleniti quaerat illum
+          beatae laborum recusandae quam?
+        </About>
+      </Content>
     </Container>
   );
 };
