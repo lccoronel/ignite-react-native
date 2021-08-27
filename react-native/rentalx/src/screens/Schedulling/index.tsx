@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components';
 import ArrowSvg from '../../assets/arrow.svg';
 import BackButton from '../../components/BackButton';
 import Button from '../../components/Button/inde';
+import Calendar from '../../components/Calendar';
 import {
   Container,
   Header,
@@ -24,8 +25,8 @@ const Schedulling: React.FC = () => {
     <Container>
       <Header>
         <StatusBar
-          translucent
           barStyle="light-content"
+          translucent
           backgroundColor="transparent"
         />
         <BackButton color={colors.shape} />
@@ -49,7 +50,9 @@ const Schedulling: React.FC = () => {
         </RentalPeriod>
       </Header>
 
-      <Content />
+      <Content>
+        <Calendar />
+      </Content>
 
       <Footer>
         <Button title="Confirmar" />
