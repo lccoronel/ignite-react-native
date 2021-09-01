@@ -10,7 +10,7 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from './styles/theme';
-import Schedulling from './screens/Schedulling';
+import SchedullingDetails from './screens/SchedullingDetails';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Schedulling />
+      <SchedullingDetails />
     </ThemeProvider>
   );
 };
