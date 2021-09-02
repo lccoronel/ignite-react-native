@@ -3,7 +3,8 @@ import { useWindowDimensions } from 'react-native';
 
 import LogoSvg from '../../assets/logo_background_gray.svg';
 import DoneSvg from '../../assets/done.svg';
-import { Container, Content, Title, Message } from './styles';
+import ConfirmButton from '../../components/ConfirmButton';
+import { Container, Content, Title, Message, Footer } from './styles';
 
 const SchedullingComplete: React.FC = () => {
   const { width } = useWindowDimensions();
@@ -22,6 +23,10 @@ const SchedullingComplete: React.FC = () => {
           egar seu automovel
         </Message>
       </Content>
+
+      <Footer>
+        <ConfirmButton title="OK" />
+      </Footer>
     </Container>
   );
 };
