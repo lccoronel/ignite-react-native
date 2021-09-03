@@ -17,9 +17,9 @@ import {
   CarImage,
 } from './styles';
 
-const Car: React.FC<ICarProps> = ({ data }) => {
+const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
   return (
-    <Container>
+    <Container {...rest}>
       <Details>
         <Brand>{data.brand}</Brand>
         <Name>{data.name}</Name>
