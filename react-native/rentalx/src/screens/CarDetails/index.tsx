@@ -27,7 +27,7 @@ import {
   Accessories,
   Footer,
 } from './styles';
-import Button from '../../components/Button/inde';
+import Button from '../../components/Button';
 
 const CarDetails: React.FC = () => {
   return (
