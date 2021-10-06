@@ -1,28 +1,31 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 
+import { useTheme } from 'styled-components';
 import Logo from '../../assets/logo.svg';
 import Car from '../../components/Car';
-import { ICar } from '../../dtos/Car';
 import { Container, Header, TotalCars, CarList } from './styles';
+import api from '../../services/api';
+import { ICarDTO } from '../../dtos/CarDTO';
 
 const Home: React.FC = () => {
   const { navigate } = useNavigation();
+  const { colors } = useTheme();
 
-  const data: ICar = {
-    brand: 'Audi',
-    name: 'RS 5 coupe',
-    rent: {
-      period: 'por dia',
-      price: '120,00',
-    },
-  };
+  const [cars, setCars] = useState<ICarDTO[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  function handleNavigate() {
-    navigate('CarDetails');
-  }
+  useEffect(() => {
+    try {
+      api.get('cars').then(response => setCars(response.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <Container>
@@ -38,13 +41,17 @@ const Home: React.FC = () => {
         <TotalCars>Total de 12 carros</TotalCars>
       </Header>
 
-      <CarList
-        data={[1, 2, 3]}
-        keyExtractor={item => String(item)}
-        renderItem={({ item }) => (
-          <Car data={data} key={item} onPress={handleNavigate} />
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator color={colors.main} />
+      ) : (
+        <CarList
+          data={cars}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <Car data={item} onPress={() => navigate('CarDetails')} />
+          )}
+        />
+      )}
     </Container>
   );
 };

@@ -1,7 +1,6 @@
 import { RectButtonProps } from 'react-native-gesture-handler';
-
-import { ICar } from '../../dtos/Car';
+import { ICarDTO } from '../../dtos/CarDTO';
 
 export interface ICarProps extends RectButtonProps {
-  data: ICar;
+  data: ICarDTO;
 }

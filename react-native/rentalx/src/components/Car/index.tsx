@@ -1,7 +1,6 @@
 import React from 'react';
 
 import GasolineSVG from '../../assets/gasoline.svg';
-import audiPNG from '../../assets/audi.png';
 import { ICarProps } from './types';
 
 import {
@@ -36,7 +35,7 @@ const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
         </About>
       </Details>
 
-      <CarImage source={audiPNG} resizeMode="contain" />
+      <CarImage source={{ uri: data.thumbnail }} resizeMode="contain" />
     </Container>
   );
 };

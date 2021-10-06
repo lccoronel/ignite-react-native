@@ -1,7 +1,7 @@
 import { FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
-import { ICar } from '../../dtos/Car';
+import { ICarDTO } from '../../dtos/CarDTO';
 
 export const Container = styled.View`
   flex: 1;
@@ -24,7 +24,7 @@ export const TotalCars = styled.Text`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-export const CarList = styled(FlatList as new () => FlatList<number>).attrs({
+export const CarList = styled(FlatList as new () => FlatList<ICarDTO>).attrs({
   contentContainerStyle: {
     padding: 24,
   },

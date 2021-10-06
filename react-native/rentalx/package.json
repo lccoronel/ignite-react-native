@@ -4,7 +4,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "start": "react-native start"
+    "start": "react-native start",
+    "api": "json-server ./src/services/server.json --delay 700 --port 3333"
   },
   "dependencies": {
     "@expo-google-fonts/archivo": "^0.2.0",
@@ -16,6 +17,7 @@
     "@react-navigation/stack": "^5.x",
     "@types/react": "^17.0.17",
     "@types/react-native": "^0.64.13",
+    "axios": "^0.22.0",
     "expo": "~42.0.1",
     "expo-app-loading": "^1.1.2",
     "expo-font": "~9.2.1",
