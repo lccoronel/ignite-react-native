@@ -27,6 +27,10 @@ const Home: React.FC = () => {
     }
   }, []);
 
+  function navigateToCarDetail(car: ICarDTO) {
+    navigate('CarDetails', { car });
+  }
+
   return (
     <Container>
       <StatusBar
@@ -48,7 +52,7 @@ const Home: React.FC = () => {
           data={cars}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <Car data={item} onPress={() => navigate('CarDetails')} />
+            <Car data={item} onPress={() => navigateToCarDetail(item)} />
           )}
         />
       )}

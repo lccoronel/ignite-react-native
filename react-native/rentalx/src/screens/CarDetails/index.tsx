@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
+import Button from '../../components/Button';
 
 import SpeedSvg from '../../assets/speed.svg';
 import AccelerationSvg from '../../assets/acceleration.svg';
@@ -11,6 +12,7 @@ import ForceSvg from '../../assets/force.svg';
 import GasolineSvg from '../../assets/gasoline.svg';
 import ExchangeSvg from '../../assets/exchange.svg';
 import PeopleSvg from '../../assets/people.svg';
+import { ICarDTO } from '../../dtos/CarDTO';
 
 import {
   Container,
@@ -28,49 +30,47 @@ import {
   Accessories,
   Footer,
 } from './styles';
-import Button from '../../components/Button';
+
+interface Params {
+  car: ICarDTO;
+}
 
 const CarDetails: React.FC = () => {
-  const { navigate } = useNavigation();
-
-  function handleNavigate() {
-    navigate('Schedulling');
-  }
+  const { navigate, goBack } = useNavigation();
+  const route = useRoute();
+  const { car } = route.params as Params;
 
   return (
     <Container>
       <Header>
-        <BackButton />
+        <BackButton onPress={goBack} />
       </Header>
 
       <CarImages>
-        <ImageSlider
-          imageUrl={[
-            'https://img2.gratispng.com/20180204/raw/kisspng-audi-sportback-concept-car-dealership-audi-a7-audi-5a7773823e75b1.8360077315177777942559.jpg',
-          ]}
-        />
+        <ImageSlider imageUrl={[car.thumbnail!]} />
       </CarImages>
 
       <Content>
         <Detail>
           <Description>
-            <Brand>Larborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>RS 500</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>RS {car.rent.price}</Price>
           </Rent>
         </Detail>
 
         <Accessories>
-          <Accessory icon={SpeedSvg} name="380km/h" />
-          <Accessory icon={AccelerationSvg} name="3.2s" />
-          <Accessory icon={ForceSvg} name="800 HP" />
-          <Accessory icon={GasolineSvg} name="Gasolina" />
-          <Accessory icon={ExchangeSvg} name="Auto" />
-          <Accessory icon={PeopleSvg} name="2 pessoas" />
+          {car.accessories.map(accessory => (
+            <Accessory
+              icon={SpeedSvg}
+              name={accessory.name}
+              key={accessory.type}
+            />
+          ))}
         </Accessories>
 
         <About>
@@ -82,7 +82,7 @@ const CarDetails: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={handleNavigate} />
+        <Button title="Confirmar" onPress={() => navigate('Schedulling')} />
       </Footer>
     </Container>
   );
