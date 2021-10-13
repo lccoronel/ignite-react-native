@@ -6,13 +6,8 @@ import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
 import Button from '../../components/Button';
 
-import SpeedSvg from '../../assets/speed.svg';
-import AccelerationSvg from '../../assets/acceleration.svg';
-import ForceSvg from '../../assets/force.svg';
-import GasolineSvg from '../../assets/gasoline.svg';
-import ExchangeSvg from '../../assets/exchange.svg';
-import PeopleSvg from '../../assets/people.svg';
 import { ICarDTO } from '../../dtos/CarDTO';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 import {
   Container,
@@ -66,7 +61,7 @@ const CarDetails: React.FC = () => {
         <Accessories>
           {car.accessories.map(accessory => (
             <Accessory
-              icon={SpeedSvg}
+              icon={getAccessoryIcon(accessory.type)}
               name={accessory.name}
               key={accessory.type}
             />
