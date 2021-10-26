@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
 import { days, months, shortDays, shortMonths } from './data/InfoCalendar';
+import { CalendarProps } from './types';
 
 LocaleConfig.locales['pt-br'] = {
   monthNames: months,
@@ -18,7 +19,7 @@ LocaleConfig.locales['pt-br'] = {
 
 LocaleConfig.defaultLocale = 'pt-br';
 
-const Calendar: React.FC = () => {
+const Calendar: React.FC<CalendarProps> = ({ markedDates, onDayPress }) => {
   const { colors, fonts } = useTheme();
 
   return (
@@ -46,6 +47,9 @@ const Calendar: React.FC = () => {
       }}
       firstDay={1}
       minDate={new Date()}
+      markingType="period"
+      markedDates={markedDates}
+      onDayPress={onDayPress}
     />
   );
 };
