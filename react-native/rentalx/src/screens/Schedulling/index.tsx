@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { format } from 'date-fns';
 import ArrowSvg from '../../assets/arrow.svg';
 import BackButton from '../../components/BackButton';
 import Button from '../../components/Button';
 import Calendar from '../../components/Calendar';
 import { DayProps, MarkedDateProps } from '../../components/Calendar/types';
+import { IRentalPeriod, ISchedullingParams } from './types';
 import { generateInterval } from '../../components/Calendar/generateInterval';
+import { getPlatformDate } from '../../utils/getPlatfomDate';
+
 import {
   Container,
   Header,
@@ -23,15 +27,28 @@ import {
 
 const Schedulling: React.FC = () => {
   const { colors } = useTheme();
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
+  const route = useRoute();
+  const { car } = route.params as ISchedullingParams;
 
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>();
   const [markedDate, setMarkedDate] = useState<MarkedDateProps>(
     {} as MarkedDateProps,
   );
+  const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>(
+    {} as IRentalPeriod,
+  );
 
   function handleNavigate() {
-    navigate('SchedullingDetails');
+    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
+      Alert.alert('Selecione as datas para alugar');
+      return;
+    }
+
+    navigate('SchedullingDetails', {
+      car,
+      dates: Object.keys(markedDate),
+    });
   }
 
   function handleChangeDate(date: DayProps) {
@@ -46,6 +63,14 @@ const Schedulling: React.FC = () => {
     setLastSelectedDate(end);
     const interval = generateInterval(start, end);
     setMarkedDate(interval);
+
+    const firstDate = Object.keys(interval)[0];
+    const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
+
+    setRentalPeriod({
+      startFormatted: format(getPlatformDate(new Date(firstDate)), 'dd/MM/yyy'),
+      endFormatted: format(getPlatformDate(new Date(endDate)), 'dd/MM/yyy'),
+    });
   }
 
   return (
@@ -56,7 +81,7 @@ const Schedulling: React.FC = () => {
           translucent
           backgroundColor="transparent"
         />
-        <BackButton color={colors.shape} />
+        <BackButton color={colors.shape} onPress={goBack} />
 
         <Title>
           Escolha uma{'\n'}data de inicio e{'\n'}fim do aluguel
@@ -65,14 +90,14 @@ const Schedulling: React.FC = () => {
         <RentalPeriod>
           <DateInfo selected={false}>
             <DateTitle>DE</DateTitle>
-            <DateValue />
+            <DateValue>{rentalPeriod.startFormatted}</DateValue>
           </DateInfo>
 
           <ArrowSvg />
 
           <DateInfo selected={false}>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue />
+            <DateValue>{rentalPeriod.endFormatted}</DateValue>
           </DateInfo>
         </RentalPeriod>
       </Header>

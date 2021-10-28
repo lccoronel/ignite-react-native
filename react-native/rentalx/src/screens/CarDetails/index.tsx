@@ -5,8 +5,7 @@ import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
 import Button from '../../components/Button';
-
-import { ICarDTO } from '../../dtos/CarDTO';
+import { ICarDetaisParams } from './types';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 import {
@@ -26,14 +25,10 @@ import {
   Footer,
 } from './styles';
 
-interface Params {
-  car: ICarDTO;
-}
-
 const CarDetails: React.FC = () => {
   const { navigate, goBack } = useNavigation();
   const route = useRoute();
-  const { car } = route.params as Params;
+  const { car } = route.params as ICarDetaisParams;
 
   return (
     <Container>
@@ -77,7 +72,10 @@ const CarDetails: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={() => navigate('Schedulling')} />
+        <Button
+          title="Confirmar"
+          onPress={() => navigate('Schedulling', { car })}
+        />
       </Footer>
     </Container>
   );
