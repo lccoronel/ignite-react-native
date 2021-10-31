@@ -65,6 +65,8 @@ const SchedullingDetails: React.FC = () => {
     const response = await api.get(`/schedules_bycars/${car.id}`);
     const unavailable_dates = [...response.data.unavailable_dates, ...dates];
 
+    await api.post('schedules_byuser', { user_id: 1, car });
+
     api
       .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
       .then(() => navigate('SchedullingComplete'))
