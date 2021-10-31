@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { format } from 'date-fns';
 
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
 import Button from '../../components/Button';
 
-import SpeedSvg from '../../assets/speed.svg';
-import AccelerationSvg from '../../assets/acceleration.svg';
-import ForceSvg from '../../assets/force.svg';
-import GasolineSvg from '../../assets/gasoline.svg';
-import ExchangeSvg from '../../assets/exchange.svg';
-import PeopleSvg from '../../assets/people.svg';
+import { IRentalPeriod, ISchedullingDetailsParams } from './types';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { getPlatformDate } from '../../utils/getPlatfomDate';
+import api from '../../services/api';
 
 import {
   Container,
@@ -44,46 +44,64 @@ import {
 
 const SchedullingDetails: React.FC = () => {
   const { colors } = useTheme();
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
+  const route = useRoute();
+  const { car, dates } = route.params as ISchedullingDetailsParams;
 
-  function handleNavigate() {
-    navigate('SchedullingComplete');
+  const [rentalPeriod, setRentalPeriod] = useState({} as IRentalPeriod);
+  const carRentTotal = Number(dates.length * car.rent.price);
+
+  useEffect(() => {
+    setRentalPeriod({
+      start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+      end: format(
+        getPlatformDate(new Date(dates[dates.length - 1])),
+        'dd/MM/yyyy',
+      ),
+    });
+  }, [dates]);
+
+  async function handleNavigate() {
+    const response = await api.get(`/schedules_bycars/${car.id}`);
+    const unavailable_dates = [...response.data.unavailable_dates, ...dates];
+
+    api
+      .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
+      .then(() => navigate('SchedullingComplete'))
+      .catch(() => Alert.alert('Não foi possivel confirmar agendamento'));
   }
 
   return (
     <Container>
       <Header>
-        <BackButton />
+        <BackButton onPress={goBack} />
       </Header>
 
       <CarImages>
-        <ImageSlider
-          imageUrl={[
-            'https://img2.gratispng.com/20180204/raw/kisspng-audi-sportback-concept-car-dealership-audi-a7-audi-5a7773823e75b1.8360077315177777942559.jpg',
-          ]}
-        />
+        <ImageSlider imageUrl={car.photos} />
       </CarImages>
 
       <Content>
         <Detail>
           <Description>
-            <Brand>Larborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>RS 500</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>RS {car.rent.price}</Price>
           </Rent>
         </Detail>
 
         <Accessories>
-          <Accessory icon={SpeedSvg} name="380km/h" />
-          <Accessory icon={AccelerationSvg} name="3.2s" />
-          <Accessory icon={ForceSvg} name="800 HP" />
-          <Accessory icon={GasolineSvg} name="Gasolina" />
-          <Accessory icon={ExchangeSvg} name="Auto" />
-          <Accessory icon={PeopleSvg} name="2 pessoas" />
+          {car.accessories.map(accessory => (
+            <Accessory
+              icon={getAccessoryIcon(accessory.type)}
+              name={accessory.name}
+              key={accessory.type}
+            />
+          ))}
         </Accessories>
 
         <RentalPeriod>
@@ -93,7 +111,7 @@ const SchedullingDetails: React.FC = () => {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>18/02/2020</DateValue>
+            <DateValue>{rentalPeriod.start}</DateValue>
           </DateInfo>
 
           <Feather
@@ -103,16 +121,18 @@ const SchedullingDetails: React.FC = () => {
           />
 
           <DateInfo>
-            <DateTitle>DE</DateTitle>
-            <DateValue>18/02/2020</DateValue>
+            <DateTitle>ATÉ</DateTitle>
+            <DateValue>{rentalPeriod.end}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RebtalPriceLabel>TOTAL</RebtalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 500 x 3 diarias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+            <RentalPriceQuota>
+              R$ {car.rent.price} x {dates.length} diárias
+            </RentalPriceQuota>
+            <RentalPriceTotal>R$ {carRentTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
