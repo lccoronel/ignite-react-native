@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
-
 import { useTheme } from 'styled-components';
+import { Ionicons } from '@expo/vector-icons';
+
 import Logo from '../../assets/logo.svg';
 import Car from '../../components/Car';
-import { Container, Header, TotalCars, CarList } from './styles';
 import api from '../../services/api';
 import { ICarDTO } from '../../dtos/CarDTO';
+import { Container, Header, TotalCars, CarList, MyCarsButton } from './styles';
 
 const Home: React.FC = () => {
   const { navigate } = useNavigation();
@@ -56,6 +57,10 @@ const Home: React.FC = () => {
           )}
         />
       )}
+
+      <MyCarsButton onPress={() => navigate('MyCars')}>
+        <Ionicons name="ios-car-sport" color={colors.shape} size={32} />
+      </MyCarsButton>
     </Container>
   );
 };
