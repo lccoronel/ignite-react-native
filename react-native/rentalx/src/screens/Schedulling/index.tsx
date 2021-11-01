@@ -40,15 +40,7 @@ const Schedulling: React.FC = () => {
   );
 
   function handleNavigate() {
-    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
-      Alert.alert('Selecione as datas para alugar');
-      return;
-    }
-
-    navigate('SchedullingDetails', {
-      car,
-      dates: Object.keys(markedDate),
-    });
+    navigate('SchedullingDetails', { car, dates: Object.keys(markedDate) });
   }
 
   function handleChangeDate(date: DayProps) {
@@ -107,7 +99,11 @@ const Schedulling: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={handleNavigate} />
+        <Button
+          title="Confirmar"
+          onPress={handleNavigate}
+          enabled={!!rentalPeriod.endFormatted}
+        />
       </Footer>
     </Container>
   );

@@ -48,6 +48,7 @@ const SchedullingDetails: React.FC = () => {
   const route = useRoute();
   const { car, dates } = route.params as ISchedullingDetailsParams;
 
+  const [loading, setLoading] = useState(false);
   const [rentalPeriod, setRentalPeriod] = useState({} as IRentalPeriod);
   const carRentTotal = Number(dates.length * car.rent.price);
 
@@ -78,7 +79,10 @@ const SchedullingDetails: React.FC = () => {
     api
       .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
       .then(() => navigate('SchedullingComplete'))
-      .catch(() => Alert.alert('Não foi possivel confirmar agendamento'));
+      .catch(() => {
+        setLoading(false);
+        Alert.alert('Não foi possivel confirmar agendamento');
+      });
   }
 
   return (
@@ -152,6 +156,8 @@ const SchedullingDetails: React.FC = () => {
           title="Alugar agora"
           color={colors.success}
           onPress={handleNavigate}
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>
