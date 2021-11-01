@@ -4,4 +4,6 @@ export interface ICarProps {
   car: ICarDTO;
   id: string;
   user_id: string;
+  startDate: string;
+  endDate: string;
 }
