@@ -37,7 +37,7 @@ const CarDetails: React.FC = () => {
       </Header>
 
       <CarImages>
-        <ImageSlider imageUrl={[car.thumbnail!]} />
+        <ImageSlider imageUrl={car.photos} />
       </CarImages>
 
       <Content>
