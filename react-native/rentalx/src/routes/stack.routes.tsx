@@ -7,12 +7,14 @@ import Schedulling from '../screens/Schedulling';
 import SchedullingDetails from '../screens/SchedullingDetails';
 import SchedullingComplete from '../screens/SchedullingComplete';
 import Mycars from '../screens/Mycars';
+import Splash from '../screens/Splash';
 
 const { Navigator, Screen } = createStackNavigator();
 
 const StackRoutes: React.FC = () => {
   return (
-    <Navigator headerMode="none">
+    <Navigator headerMode="none" initialRouteName="Splash">
+      <Screen name="Splash" component={Splash} />
       <Screen name="Home" component={Home} />
       <Screen name="CarDetails" component={CarDetails} />
       <Screen name="Schedulling" component={Schedulling} />
