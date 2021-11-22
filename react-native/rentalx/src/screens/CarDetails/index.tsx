@@ -1,6 +1,14 @@
 import React from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
+import { StatusBar } from 'react-native';
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
@@ -12,7 +20,6 @@ import {
   Container,
   Header,
   CarImages,
-  Content,
   Detail,
   Description,
   Brand,
@@ -30,17 +37,52 @@ const CarDetails: React.FC = () => {
   const route = useRoute();
   const { car } = route.params as ICarDetaisParams;
 
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    scrollY.value = event.contentOffset.y;
+  });
+
+  const headerStyleAnimation = useAnimatedStyle(() => {
+    return {
+      height: interpolate(
+        scrollY.value,
+        [0, 200],
+        [200, 70],
+        Extrapolate.CLAMP,
+      ),
+    };
+  });
+
+  const sliderStyleAnimation = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollY.value, [0, 200], [1, 0], Extrapolate.CLAMP),
+    };
+  });
+
   return (
     <Container>
-      <Header>
-        <BackButton onPress={goBack} />
-      </Header>
+      <StatusBar
+        barStyle="dark-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
-      <CarImages>
-        <ImageSlider imageUrl={car.photos} />
-      </CarImages>
+      <Animated.View style={[headerStyleAnimation]}>
+        <Header>
+          <BackButton onPress={goBack} />
+        </Header>
 
-      <Content>
+        <CarImages style={sliderStyleAnimation}>
+          <ImageSlider imageUrl={car.photos} />
+        </CarImages>
+      </Animated.View>
+
+      <Animated.ScrollView
+        contentContainerStyle={{ padding: 24 }}
+        showsVerticalScrollIndicator={false}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+      >
         <Detail>
           <Description>
             <Brand>{car.brand}</Brand>
@@ -63,13 +105,10 @@ const CarDetails: React.FC = () => {
           ))}
         </Accessories>
 
-        <About>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex,
-          aspernatur fugit aliquam, voluptatem expedita, reiciendis aliquid qui
-          vel totam quas repellendus laudantium sit deleniti quaerat illum
-          beatae laborum recusandae quam?
-        </About>
-      </Content>
+        <About>{car.about}</About>
+        <About>{car.about}</About>
+        <About>{car.about}</About>
+      </Animated.ScrollView>
 
       <Footer>
         <Button
