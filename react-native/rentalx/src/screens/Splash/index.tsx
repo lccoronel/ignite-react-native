@@ -1,40 +1,52 @@
-import React from 'react';
-import { Button, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
 import Animated, {
-  useSharedValue,
+  interpolate,
   useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
+
+import BrandSvg from '../../assets/brand.svg';
+import LogoSvg from '../../assets/logo.svg';
 
 import { Container } from './styles';
 
 const Splash: React.FC = () => {
-  const animation = useSharedValue(0);
+  const splashAnimaation = useSharedValue(0);
 
-  const animatedStyles = useAnimatedStyle(() => {
+  useEffect(() => {
+    splashAnimaation.value = withTiming(50, { duration: 3000 });
+  }, [splashAnimaation]);
+
+  const brandStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: animation.value }],
+      opacity: interpolate(splashAnimaation.value, [0, 50], [1, 0]),
+      transform: [
+        { translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) },
+      ],
     };
   });
 
-  function handleAnimationPosition() {
-    animation.value = Math.random() * 500;
-  }
+  const logoStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(splashAnimaation.value, [0, 50], [0, 1]),
+      transform: [
+        { translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) },
+      ],
+    };
+  });
 
   return (
     <Container>
-      <Animated.View style={[styles.box, animatedStyles]} />
+      <Animated.View style={brandStyle}>
+        <BrandSvg width={95} height={75} />
+      </Animated.View>
 
-      <Button title="Mover" onPress={handleAnimationPosition} />
+      <Animated.View style={logoStyle}>
+        <LogoSvg width={180} height={20} />
+      </Animated.View>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  box: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'red',
-  },
-});
 
 export default Splash;
