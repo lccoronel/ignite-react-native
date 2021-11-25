@@ -9,6 +9,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { StatusBar } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { useTheme } from 'styled-components';
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
@@ -34,6 +36,7 @@ import {
 
 const CarDetails: React.FC = () => {
   const { navigate, goBack } = useNavigation();
+  const { colors } = useTheme();
   const route = useRoute();
   const { car } = route.params as ICarDetaisParams;
 
@@ -55,7 +58,12 @@ const CarDetails: React.FC = () => {
 
   const sliderStyleAnimation = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(scrollY.value, [0, 200], [1, 0], Extrapolate.CLAMP),
+      opacity: interpolate(
+        scrollY.value,
+        [0, 50, 200],
+        [1, 0.5, 0],
+        Extrapolate.CLAMP,
+      ),
     };
   });
 
@@ -67,7 +75,17 @@ const CarDetails: React.FC = () => {
         backgroundColor="transparent"
       />
 
-      <Animated.View style={[headerStyleAnimation]}>
+      <Animated.View
+        style={[
+          headerStyleAnimation,
+          {
+            position: 'absolute',
+            overflow: 'hidden',
+            zIndex: 1,
+            backgroundColor: colors.background_secondary,
+          },
+        ]}
+      >
         <Header>
           <BackButton onPress={goBack} />
         </Header>
@@ -78,7 +96,10 @@ const CarDetails: React.FC = () => {
       </Animated.View>
 
       <Animated.ScrollView
-        contentContainerStyle={{ padding: 24 }}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingTop: getStatusBarHeight() + 160,
+        }}
         showsVerticalScrollIndicator={false}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
