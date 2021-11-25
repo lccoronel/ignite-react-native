@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StatusBar } from 'react-native';
+import { ActivityIndicator, StatusBar, BackHandler } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -53,6 +53,8 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+
     try {
       api.get('cars').then(response => setCars(response.data));
     } catch (error) {
@@ -73,7 +75,7 @@ const Home: React.FC = () => {
       <Header>
         <Logo width={RFValue(108)} height={RFValue(12)} />
 
-        <TotalCars>Total de 12 carros</TotalCars>
+        {!loading && <TotalCars>Total de {cars.length} carros</TotalCars>}
       </Header>
 
       {loading ? (
