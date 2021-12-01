@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StatusBar, BackHandler } from 'react-native';
+import { StatusBar, BackHandler } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
+import LoadAnimation from '../../components/LoadAnimation';
 import Logo from '../../assets/logo.svg';
 import Car from '../../components/Car';
 import api from '../../services/api';
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
   const { colors } = useTheme();
 
   const [cars, setCars] = useState<ICarDTO[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const positionY = useSharedValue(0);
   const positionX = useSharedValue(0);
@@ -56,6 +57,7 @@ const Home: React.FC = () => {
     BackHandler.addEventListener('hardwareBackPress', () => true);
 
     try {
+      setLoading(true);
       api.get('cars').then(response => setCars(response.data));
     } catch (error) {
       console.log(error);
@@ -79,7 +81,7 @@ const Home: React.FC = () => {
       </Header>
 
       {loading ? (
-        <ActivityIndicator color={colors.main} />
+        <LoadAnimation />
       ) : (
         <CarList
           data={cars}
