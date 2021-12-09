@@ -8,12 +8,13 @@ import SchedullingDetails from '../screens/SchedullingDetails';
 import SchedullingComplete from '../screens/SchedullingComplete';
 import Mycars from '../screens/Mycars';
 import Splash from '../screens/Splash';
+import Signin from '../screens/Signin';
 
 const { Navigator, Screen } = createStackNavigator();
 
 const StackRoutes: React.FC = () => {
   return (
-    <Navigator headerMode="none" initialRouteName="Splash">
+    <Navigator headerMode="none" initialRouteName="Signin">
       <Screen name="Splash" component={Splash} />
       <Screen
         name="Home"
@@ -25,6 +26,7 @@ const StackRoutes: React.FC = () => {
       <Screen name="SchedullingDetails" component={SchedullingDetails} />
       <Screen name="SchedullingComplete" component={SchedullingComplete} />
       <Screen name="MyCars" component={Mycars} />
+      <Screen name="Signin" component={Signin} />
     </Navigator>
   );
 };
