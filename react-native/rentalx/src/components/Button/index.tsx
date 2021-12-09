@@ -10,6 +10,7 @@ const Button: React.FC<IButtonProps> = ({
   color,
   enabled = true,
   loading = false,
+  light = false,
   ...rest
 }) => {
   const { colors } = useTheme();
@@ -24,7 +25,7 @@ const Button: React.FC<IButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={colors.shape} size="large" />
       ) : (
-        <Title>{title}</Title>
+        <Title light={light}>{title}</Title>
       )}
     </Container>
   );
