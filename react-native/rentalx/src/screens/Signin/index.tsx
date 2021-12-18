@@ -3,7 +3,8 @@ import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 
 import Button from '../../components/Button';
-import { Container, Header, Title, SubTitle, Footer } from './styles';
+import { Input } from '../../components/Input';
+import { Container, Header, Title, SubTitle, Footer, Form } from './styles';
 
 const Signin: React.FC = () => {
   const { colors } = useTheme();
@@ -26,6 +27,16 @@ const Signin: React.FC = () => {
           uma experiencia incrivel
         </SubTitle>
       </Header>
+
+      <Form>
+        <Input
+          iconName="mail"
+          placeholder="E-mail"
+          keyboardType="email-address"
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+      </Form>
 
       <Footer>
         <Button
