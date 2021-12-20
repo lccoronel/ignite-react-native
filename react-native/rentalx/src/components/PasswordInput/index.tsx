@@ -40,7 +40,7 @@ export const PasswrodInput: React.FC<InputProps> = ({
   }
 
   return (
-    <Container isFocused={isFocused}>
+    <Container>
       <IconContainer>
         <Feather
           name={iconName}
@@ -53,6 +53,7 @@ export const PasswrodInput: React.FC<InputProps> = ({
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         secureTextEntry={isPasswordVisible}
+        isFocused={isFocused}
         {...rest}
       />
 

@@ -26,7 +26,7 @@ export const Input: React.FC<InputProps> = ({ iconName, value, ...rest }) => {
   }
 
   return (
-    <Container isFocused={isFocused}>
+    <Container>
       <IconContainer>
         <Feather
           name={iconName}
@@ -38,6 +38,7 @@ export const Input: React.FC<InputProps> = ({ iconName, value, ...rest }) => {
       <InputText
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
+        isFocused={isFocused}
         {...rest}
       />
     </Container>
