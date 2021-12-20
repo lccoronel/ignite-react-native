@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 
 import Button from '../../components/Button';
@@ -10,6 +11,7 @@ import { Container, Header, Title, SubTitle, Footer, Form } from './styles';
 
 export const Signin: React.FC = () => {
   const { colors } = useTheme();
+  const { navigate } = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ export const Signin: React.FC = () => {
       if (err instanceof Yup.ValidationError) {
         Alert.alert('Erro de autenticação', err.message);
       } else {
-        console.log('outro erro');
+        Alert.alert('outro erro');
       }
     }
   }
@@ -66,11 +68,11 @@ export const Signin: React.FC = () => {
             <Button title="Login" onPress={handleSignin} enabled loading={false} />
 
             <Button
+              enabled
               light
               title="Criar conta gratuita"
               color={colors.background_secondary}
-              onPress={() => console.log()}
-              enabled={false}
+              onPress={() => navigate('FirstStep')}
               loading={false}
             />
           </Footer>

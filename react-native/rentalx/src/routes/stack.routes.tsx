@@ -8,7 +8,8 @@ import SchedullingDetails from '../screens/SchedullingDetails';
 import SchedullingComplete from '../screens/SchedullingComplete';
 import Mycars from '../screens/Mycars';
 import Splash from '../screens/Splash';
-import Signin from '../screens/Signin';
+import { Signin } from '../screens/Signin';
+import { FisrtStep } from '../screens/Signup/FirstStep';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -16,17 +17,14 @@ const StackRoutes: React.FC = () => {
   return (
     <Navigator headerMode="none" initialRouteName="Signin">
       <Screen name="Splash" component={Splash} />
-      <Screen
-        name="Home"
-        component={Home}
-        options={{ gestureEnabled: false }}
-      />
+      <Screen name="Home" component={Home} options={{ gestureEnabled: false }} />
       <Screen name="CarDetails" component={CarDetails} />
       <Screen name="Schedulling" component={Schedulling} />
       <Screen name="SchedullingDetails" component={SchedullingDetails} />
       <Screen name="SchedullingComplete" component={SchedullingComplete} />
       <Screen name="MyCars" component={Mycars} />
       <Screen name="Signin" component={Signin} />
+      <Screen name="FirstStep" component={FisrtStep} />
     </Navigator>
   );
 };
