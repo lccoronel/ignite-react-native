@@ -62,7 +62,7 @@ const Signin: React.FC = () => {
             <Button
               title="Login"
               onPress={() => console.log()}
-              enabled={false}
+              enabled
               loading={false}
             />
 

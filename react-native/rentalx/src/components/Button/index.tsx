@@ -8,7 +8,6 @@ import { Container, Title } from './styles';
 const Button: React.FC<IButtonProps> = ({
   title,
   color,
-  enabled = true,
   loading = false,
   light = false,
   ...rest
@@ -16,12 +15,7 @@ const Button: React.FC<IButtonProps> = ({
   const { colors } = useTheme();
 
   return (
-    <Container
-      {...rest}
-      color={color}
-      enabled={enabled}
-      style={{ opacity: enabled === false || loading === true ? 0.5 : 1 }}
-    >
+    <Container {...rest} color={color} loading={loading}>
       {loading ? (
         <ActivityIndicator color={colors.shape} size="large" />
       ) : (

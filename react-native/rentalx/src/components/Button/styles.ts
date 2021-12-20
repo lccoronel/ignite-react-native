@@ -11,6 +11,7 @@ export const Container = styled(RectButton)<IContainerProps>`
   justify-content: center;
   background-color: ${({ theme, color }) => color || theme.colors.main};
   margin-bottom: 8px;
+  opacity: ${({ enabled, loading }) => (!enabled || loading ? 0.5 : 1)};
 `;
 
 export const Title = styled.Text<IButtonTextProps>`
