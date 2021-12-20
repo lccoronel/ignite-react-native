@@ -5,7 +5,7 @@ import Home from '../screens/Home';
 import CarDetails from '../screens/CarDetails';
 import Schedulling from '../screens/Schedulling';
 import SchedullingDetails from '../screens/SchedullingDetails';
-import SchedullingComplete from '../screens/SchedullingComplete';
+import { Confirmation } from '../screens/Confirmation';
 import Mycars from '../screens/Mycars';
 import Splash from '../screens/Splash';
 import { Signin } from '../screens/Signin';
@@ -22,7 +22,7 @@ const StackRoutes: React.FC = () => {
       <Screen name="CarDetails" component={CarDetails} />
       <Screen name="Schedulling" component={Schedulling} />
       <Screen name="SchedullingDetails" component={SchedullingDetails} />
-      <Screen name="SchedullingComplete" component={SchedullingComplete} />
+      <Screen name="Confirmation" component={Confirmation} />
       <Screen name="MyCars" component={Mycars} />
       <Screen name="Signin" component={Signin} />
       <Screen name="FirstStep" component={FisrtStep} />
