@@ -10,6 +10,7 @@ import Mycars from '../screens/Mycars';
 import Splash from '../screens/Splash';
 import { Signin } from '../screens/Signin';
 import { FisrtStep } from '../screens/Signup/FirstStep';
+import { SecondStep } from '../screens/Signup/SecondStep';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -25,6 +26,7 @@ const StackRoutes: React.FC = () => {
       <Screen name="MyCars" component={Mycars} />
       <Screen name="Signin" component={Signin} />
       <Screen name="FirstStep" component={FisrtStep} />
+      <Screen name="SecondStep" component={SecondStep} />
     </Navigator>
   );
 };
