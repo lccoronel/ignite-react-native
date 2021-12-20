@@ -1,17 +1,36 @@
-import React from 'react';
-import { Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { useState } from 'react';
+import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
+
 import BackButton from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import Button from '../../../components/Button';
 import { PasswrodInput } from '../../../components/PasswordInput';
 import { Container, Header, Steps, Title, SubTitle, Form, FormTitle } from './styles';
 
+interface Params {
+  user: {
+    name: string;
+    email: string;
+    driverLicense: string;
+  };
+}
+
 export const SecondStep: React.FC = () => {
   const { goBack } = useNavigation();
+  const { params } = useRoute();
   const { colors } = useTheme();
+
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const { user } = params as Params;
+
+  function handleRegister() {
+    if (!password || !passwordConfirm) return Alert.alert('Preencha os campos');
+
+    if (password !== passwordConfirm) return Alert.alert('As senhas não são iguais');
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -38,11 +57,16 @@ export const SecondStep: React.FC = () => {
           <Form>
             <FormTitle>2. Senhas</FormTitle>
 
-            <PasswrodInput iconName="lock" placeholder="Senha" />
-            <PasswrodInput iconName="lock" placeholder="Repetir senha" />
+            <PasswrodInput iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
+            <PasswrodInput
+              iconName="lock"
+              placeholder="Repetir senha"
+              value={passwordConfirm}
+              onChangeText={setPasswordConfirm}
+            />
           </Form>
 
-          <Button color={colors.success} title="Cadastrar" loading={false} enabled />
+          <Button color={colors.success} title="Cadastrar" loading={false} enabled onPress={handleRegister} />
         </Container>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
