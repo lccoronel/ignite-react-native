@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  runOnJS,
-} from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 
 import BrandSvg from '../../assets/brand.svg';
@@ -30,18 +24,14 @@ const Splash: React.FC = () => {
   const brandStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(splashAnimaation.value, [0, 50], [1, 0]),
-      transform: [
-        { translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) },
-      ],
+      transform: [{ translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) }],
     };
   });
 
   const logoStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(splashAnimaation.value, [0, 50], [0, 1]),
-      transform: [
-        { translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) },
-      ],
+      transform: [{ translateY: interpolate(splashAnimaation.value, [0, 50], [0, -50]) }],
     };
   });
 

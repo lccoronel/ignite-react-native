@@ -48,11 +48,7 @@ const Mycars: React.FC = () => {
   return (
     <Container>
       <Header>
-        <StatusBar
-          barStyle="light-content"
-          translucent
-          backgroundColor="transparent"
-        />
+        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
         <BackButton onPress={goBack} color={colors.shape} />
 
@@ -81,12 +77,7 @@ const Mycars: React.FC = () => {
                   <CarFooterTitle>Período</CarFooterTitle>
                   <CarFooterPeriod>
                     <CarFooterDate>{item.startDate}</CarFooterDate>
-                    <AntDesign
-                      name="arrowright"
-                      size={20}
-                      color={colors.title}
-                      style={{ marginHorizontal: 10 }}
-                    />
+                    <AntDesign name="arrowright" size={20} color={colors.title} style={{ marginHorizontal: 10 }} />
                     <CarFooterDate>{item.endDate}</CarFooterDate>
                   </CarFooterPeriod>
                 </CarFooter>

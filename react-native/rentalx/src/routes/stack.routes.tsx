@@ -16,7 +16,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 const StackRoutes: React.FC = () => {
   return (
-    <Navigator headerMode="none" initialRouteName="Signin">
+    <Navigator headerMode="none" initialRouteName="Home">
       <Screen name="Splash" component={Splash} />
       <Screen name="Home" component={Home} options={{ gestureEnabled: false }} />
       <Screen name="CarDetails" component={CarDetails} />
