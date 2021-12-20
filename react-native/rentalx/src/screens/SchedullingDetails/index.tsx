@@ -55,10 +55,7 @@ const SchedullingDetails: React.FC = () => {
   useEffect(() => {
     setRentalPeriod({
       start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      end: format(
-        getPlatformDate(new Date(dates[dates.length - 1])),
-        'dd/MM/yyyy',
-      ),
+      end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
     });
   }, [dates]);
 
@@ -70,15 +67,18 @@ const SchedullingDetails: React.FC = () => {
       user_id: 1,
       car,
       startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endDate: format(
-        getPlatformDate(new Date(dates[dates.length - 1])),
-        'dd/MM/yyyy',
-      ),
+      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
     });
 
     api
       .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
-      .then(() => navigate('SchedullingComplete'))
+      .then(() =>
+        navigate('Confirmation', {
+          nextScreen: 'Home',
+          title: 'Carro alugado!',
+          message: 'Agora você só precisa ir\nté uma concencionária da RENTX\npegar seu automóvel',
+        }),
+      )
       .catch(() => {
         setLoading(false);
         Alert.alert('Não foi possivel confirmar agendamento');
@@ -110,11 +110,7 @@ const SchedullingDetails: React.FC = () => {
 
         <Accessories>
           {car.accessories.map(accessory => (
-            <Accessory
-              icon={getAccessoryIcon(accessory.type)}
-              name={accessory.name}
-              key={accessory.type}
-            />
+            <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
           ))}
         </Accessories>
 
@@ -128,11 +124,7 @@ const SchedullingDetails: React.FC = () => {
             <DateValue>{rentalPeriod.start}</DateValue>
           </DateInfo>
 
-          <Feather
-            name="chevron-right"
-            size={RFValue(24)}
-            color={colors.shape}
-          />
+          <Feather name="chevron-right" size={RFValue(24)} color={colors.shape} />
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -18,7 +19,7 @@ interface Params {
 }
 
 export const SecondStep: React.FC = () => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
   const { colors } = useTheme();
 
@@ -30,6 +31,12 @@ export const SecondStep: React.FC = () => {
     if (!password || !passwordConfirm) return Alert.alert('Preencha os campos');
 
     if (password !== passwordConfirm) return Alert.alert('As senhas não são iguais');
+
+    navigate('Confirmation', {
+      nextScreen: 'Signin',
+      title: 'Conta criada',
+      message: 'Agora é só fazer login\ne aproveitar',
+    });
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -13,17 +13,7 @@ import { IRentalPeriod, ISchedullingParams } from './types';
 import { generateInterval } from '../../components/Calendar/generateInterval';
 import { getPlatformDate } from '../../utils/getPlatfomDate';
 
-import {
-  Container,
-  Header,
-  Title,
-  RentalPeriod,
-  DateInfo,
-  DateTitle,
-  DateValue,
-  Content,
-  Footer,
-} from './styles';
+import { Container, Header, Title, RentalPeriod, DateInfo, DateTitle, DateValue, Content, Footer } from './styles';
 
 const Schedulling: React.FC = () => {
   const { colors } = useTheme();
@@ -32,12 +22,8 @@ const Schedulling: React.FC = () => {
   const { car } = route.params as ISchedullingParams;
 
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>();
-  const [markedDate, setMarkedDate] = useState<MarkedDateProps>(
-    {} as MarkedDateProps,
-  );
-  const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>(
-    {} as IRentalPeriod,
-  );
+  const [markedDate, setMarkedDate] = useState<MarkedDateProps>({} as MarkedDateProps);
+  const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>({} as IRentalPeriod);
 
   function handleNavigate() {
     navigate('SchedullingDetails', { car, dates: Object.keys(markedDate) });
@@ -68,11 +54,7 @@ const Schedulling: React.FC = () => {
   return (
     <Container>
       <Header>
-        <StatusBar
-          barStyle="light-content"
-          translucent
-          backgroundColor="transparent"
-        />
+        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
         <BackButton color={colors.shape} onPress={goBack} />
 
         <Title>
@@ -99,11 +81,7 @@ const Schedulling: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button
-          title="Confirmar"
-          onPress={handleNavigate}
-          enabled={!!rentalPeriod.endFormatted}
-        />
+        <Button title="Confirmar" onPress={handleNavigate} enabled={!!rentalPeriod.endFormatted} />
       </Footer>
     </Container>
   );
