@@ -2,13 +2,8 @@ import React, { useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 
 import { IChangeImageProps, IImageSlider } from './types';
-import {
-  Container,
-  ImageIndexes,
-  ImageIndex,
-  CarImageWraooer,
-  CarImage,
-} from './styles';
+import { Container, ImageIndexes, CarImageWraooer, CarImage } from './styles';
+import { Bullet } from '../Bullet';
 
 const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
   const [indexImage, setIndexImage] = useState(0);
@@ -21,7 +16,7 @@ const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
     <Container>
       <ImageIndexes>
         {imageUrl.map((_, index) => (
-          <ImageIndex active={index === indexImage} key={String(index)} />
+          <Bullet active={index === indexImage} key={String(index)} />
         ))}
       </ImageIndexes>
 
