@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, BackHandler } from 'react-native';
+import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -31,10 +31,7 @@ const Home: React.FC = () => {
 
   const myCarsButtonStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        { translateX: positionX.value },
-        { translateY: positionY.value },
-      ],
+      transform: [{ translateX: positionX.value }, { translateY: positionY.value }],
     };
   });
 
@@ -54,8 +51,6 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => true);
-
     try {
       setLoading(true);
       api.get('cars').then(response => setCars(response.data));
@@ -68,11 +63,7 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       <Header>
         <Logo width={RFValue(108)} height={RFValue(12)} />
@@ -86,22 +77,12 @@ const Home: React.FC = () => {
         <CarList
           data={cars}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <Car
-              data={item}
-              onPress={() => navigate('CarDetails', { car: item })}
-            />
-          )}
+          renderItem={({ item }) => <Car data={item} onPress={() => navigate('CarDetails', { car: item })} />}
         />
       )}
 
       <PanGestureHandler onGestureEvent={onGestureEvent}>
-        <Animated.View
-          style={[
-            myCarsButtonStyle,
-            { position: 'absolute', bottom: 13, right: 22 },
-          ]}
-        >
+        <Animated.View style={[myCarsButtonStyle, { position: 'absolute', bottom: 13, right: 22 }]}>
           <MyCarsButton onPress={() => navigate('MyCars')}>
             <Ionicons name="ios-car-sport" color={colors.shape} size={32} />
           </MyCarsButton>
