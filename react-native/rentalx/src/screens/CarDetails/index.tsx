@@ -47,33 +47,19 @@ const CarDetails: React.FC = () => {
 
   const headerStyleAnimation = useAnimatedStyle(() => {
     return {
-      height: interpolate(
-        scrollY.value,
-        [0, 200],
-        [200, 70],
-        Extrapolate.CLAMP,
-      ),
+      height: interpolate(scrollY.value, [0, 200], [200, 70], Extrapolate.CLAMP),
     };
   });
 
   const sliderStyleAnimation = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        scrollY.value,
-        [0, 50, 200],
-        [1, 0.5, 0],
-        Extrapolate.CLAMP,
-      ),
+      opacity: interpolate(scrollY.value, [0, 50, 200], [1, 0.5, 0], Extrapolate.CLAMP),
     };
   });
 
   return (
     <Container>
-      <StatusBar
-        barStyle="dark-content"
-        translucent
-        backgroundColor="transparent"
-      />
+      <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
 
       <Animated.View
         style={[
@@ -111,18 +97,14 @@ const CarDetails: React.FC = () => {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>RS {car.rent.price}</Price>
+            <Period>{car.period}</Period>
+            <Price>RS {car.price}</Price>
           </Rent>
         </Detail>
 
         <Accessories>
           {car.accessories.map(accessory => (
-            <Accessory
-              icon={getAccessoryIcon(accessory.type)}
-              name={accessory.name}
-              key={accessory.type}
-            />
+            <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
           ))}
         </Accessories>
 
@@ -132,10 +114,7 @@ const CarDetails: React.FC = () => {
       </Animated.ScrollView>
 
       <Footer>
-        <Button
-          title="Confirmar"
-          onPress={() => navigate('Schedulling', { car })}
-        />
+        <Button title="Confirmar" onPress={() => navigate('Schedulling', { car })} />
       </Footer>
     </Container>
   );

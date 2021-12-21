@@ -1,7 +1,10 @@
 import { ViewToken } from 'react-native';
 
 export interface IImageSlider {
-  imageUrl: string[];
+  imageUrl: {
+    id: string;
+    photo: string;
+  }[];
 }
 
 export interface IChangeImageProps {

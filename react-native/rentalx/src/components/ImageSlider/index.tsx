@@ -25,10 +25,10 @@ const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={indexChange.current}
         data={imageUrl}
-        keyExtractor={key => key}
+        keyExtractor={key => key.id}
         renderItem={({ item }) => (
           <CarImageWraooer>
-            <CarImage source={{ uri: item }} resizeMode="contain" />
+            <CarImage source={{ uri: item.photo }} resizeMode="contain" />
           </CarImageWraooer>
         )}
       />
