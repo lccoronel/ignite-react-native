@@ -3,18 +3,7 @@ import React from 'react';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { ICarProps } from './types';
 
-import {
-  Container,
-  Details,
-  Brand,
-  Name,
-  About,
-  Rent,
-  Period,
-  Price,
-  Type,
-  CarImage,
-} from './styles';
+import { Container, Details, Brand, Name, About, Rent, Period, Price, Type, CarImage } from './styles';
 
 const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
   const MotorIcon = getAccessoryIcon(data.fuel_type);
@@ -27,8 +16,8 @@ const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
 
         <About>
           <Rent>
-            <Period>{data.rent.period}</Period>
-            <Price>{`R$ ${data.rent.price}`}</Price>
+            <Period>{data.period}</Period>
+            <Price>{`R$ ${data.price}`}</Price>
           </Rent>
 
           <Type>
