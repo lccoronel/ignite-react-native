@@ -7,11 +7,11 @@ import LogoSvg from '../../assets/logo.svg';
 
 import { Container } from './styles';
 
-const Splash: React.FC = () => {
+export const Splash: React.FC = () => {
   const { navigate } = useNavigation();
   const splashAnimaation = useSharedValue(0);
 
-  const startApp = useCallback(() => navigate('Home'), [navigate]);
+  const startApp = useCallback(() => navigate('Signin'), [navigate]);
 
   useEffect(() => {
     splashAnimaation.value = withTiming(50, { duration: 3000 }, () => {
@@ -47,5 +47,3 @@ const Splash: React.FC = () => {
     </Container>
   );
 };
-
-export default Splash;
