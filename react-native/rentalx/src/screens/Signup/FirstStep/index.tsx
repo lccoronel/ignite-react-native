@@ -67,6 +67,8 @@ export const FisrtStep: React.FC = () => {
               iconName="mail"
               placeholder="E-mail"
               keyboardType="email-address"
+              autoCorrect={false}
+              autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
             />

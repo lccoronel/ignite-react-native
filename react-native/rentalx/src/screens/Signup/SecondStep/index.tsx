@@ -9,6 +9,7 @@ import { Bullet } from '../../../components/Bullet';
 import Button from '../../../components/Button';
 import { PasswrodInput } from '../../../components/PasswordInput';
 import { Container, Header, Steps, Title, SubTitle, Form, FormTitle } from './styles';
+import api from '../../../services/api';
 
 interface Params {
   user: {
@@ -27,16 +28,22 @@ export const SecondStep: React.FC = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const { user } = params as Params;
 
-  function handleRegister() {
+  async function handleRegister() {
     if (!password || !passwordConfirm) return Alert.alert('Preencha os campos');
 
     if (password !== passwordConfirm) return Alert.alert('As senhas não são iguais');
 
-    navigate('Confirmation', {
-      nextScreen: 'Signin',
-      title: 'Conta criada',
-      message: 'Agora é só fazer login\ne aproveitar',
-    });
+    try {
+      await api.post('/users', { name: user.name, email: user.email, driver_license: user.driverLicense, password });
+
+      navigate('Confirmation', {
+        nextScreen: 'Signin',
+        title: 'Conta criada',
+        message: 'Agora é só fazer login\ne aproveitar',
+      });
+    } catch (error) {
+      Alert.alert('Opa', 'Não foi possivel efetuar o cadastro');
+    }
   }
 
   return (
