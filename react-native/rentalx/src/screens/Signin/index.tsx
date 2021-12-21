@@ -7,11 +7,13 @@ import * as Yup from 'yup';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
 import { PasswrodInput } from '../../components/PasswordInput';
+import { useAuth } from '../../hook/auth';
 import { Container, Header, Title, SubTitle, Footer, Form } from './styles';
 
 export const Signin: React.FC = () => {
   const { colors } = useTheme();
   const { navigate } = useNavigation();
+  const { signIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +26,7 @@ export const Signin: React.FC = () => {
       });
 
       await schema.validate({ email, password });
+      await signIn({ email, password });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         Alert.alert('Erro de autenticação', err.message);
