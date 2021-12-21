@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  useFonts,
-  Archivo_400Regular,
-  Archivo_500Medium,
-  Archivo_600SemiBold,
-} from '@expo-google-fonts/archivo';
+import { useFonts, Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo';
 import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from './styles/theme';
 import Routes from './routes';
+import { AppProvider } from './hook';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -27,7 +23,9 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes />
+      <AppProvider>
+        <Routes />
+      </AppProvider>
     </ThemeProvider>
   );
 };
