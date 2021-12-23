@@ -54,10 +54,9 @@ const Home: React.FC = () => {
     try {
       setLoading(true);
       api.get('cars').then(response => setCars(response.data));
+      setLoading(false);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
