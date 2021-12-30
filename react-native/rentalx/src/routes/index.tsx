@@ -7,7 +7,7 @@ import { AuthRoutes } from './auth.routes';
 const Routes: React.FC = () => {
   const { user } = useAuth();
 
-  return <NavigationContainer>{user ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>;
+  return <NavigationContainer>{user.id ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>;
 };
 
 export default Routes;
