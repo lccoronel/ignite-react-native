@@ -7,7 +7,7 @@ import HomeSvg from '../assets/home.svg';
 import CarSvg from '../assets/car.svg';
 import PeopleSvg from '../assets/people.svg';
 
-import Home from '../screens/Home';
+import { Home } from '../screens/Home';
 import Mycars from '../screens/Mycars';
 import { AppStackRoutes } from './app.stack.routes';
 

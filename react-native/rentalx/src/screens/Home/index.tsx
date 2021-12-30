@@ -19,12 +19,12 @@ import api from '../../services/api';
 import { ICarDTO } from '../../dtos/CarDTO';
 import { Container, Header, TotalCars, CarList, MyCarsButton } from './styles';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   const { navigate } = useNavigation();
   const { colors } = useTheme();
 
   const [cars, setCars] = useState<ICarDTO[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const positionY = useSharedValue(0);
   const positionX = useSharedValue(0);
@@ -51,13 +51,21 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
+    let isMounted = true;
+
     try {
-      setLoading(true);
-      api.get('cars').then(response => setCars(response.data));
-      setLoading(false);
+      api.get('cars').then(response => {
+        if (isMounted) setCars(response.data);
+      });
     } catch (error) {
       console.log(error);
+    } finally {
+      if (isMounted) setLoading(false);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -90,5 +98,3 @@ const Home: React.FC = () => {
     </Container>
   );
 };
-
-export default Home;
