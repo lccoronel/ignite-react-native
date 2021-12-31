@@ -3,23 +3,14 @@ import { TextInputProps } from 'react-native';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 
-import {
-  Container,
-  InputText,
-  IconContainer,
-  ChangePasswordVisibilityButton,
-} from './styles';
+import { Container, InputText, IconContainer, ChangePasswordVisibilityButton } from './styles';
 
 interface InputProps extends TextInputProps {
   iconName: React.ComponentProps<typeof Feather>['name'];
   value?: string;
 }
 
-export const PasswrodInput: React.FC<InputProps> = ({
-  iconName,
-  value,
-  ...rest
-}) => {
+export const PasswordInput: React.FC<InputProps> = ({ iconName, value, ...rest }) => {
   const { colors } = useTheme();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
@@ -42,11 +33,7 @@ export const PasswrodInput: React.FC<InputProps> = ({
   return (
     <Container>
       <IconContainer>
-        <Feather
-          name={iconName}
-          size={24}
-          color={isFocused || isFilled ? colors.main : colors.text_detail}
-        />
+        <Feather name={iconName} size={24} color={isFocused || isFilled ? colors.main : colors.text_detail} />
       </IconContainer>
 
       <InputText
@@ -54,15 +41,12 @@ export const PasswrodInput: React.FC<InputProps> = ({
         onBlur={handleInputBlur}
         secureTextEntry={isPasswordVisible}
         isFocused={isFocused}
+        autoCorrect={false}
         {...rest}
       />
 
       <ChangePasswordVisibilityButton onPress={handlePasswordVisibilityChange}>
-        <Feather
-          name={isPasswordVisible ? 'eye-off' : 'eye'}
-          size={24}
-          color={colors.text_detail}
-        />
+        <Feather name={isPasswordVisible ? 'eye-off' : 'eye'} size={24} color={colors.text_detail} />
       </ChangePasswordVisibilityButton>
     </Container>
   );

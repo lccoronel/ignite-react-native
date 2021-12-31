@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components';
 import BackButton from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import Button from '../../../components/Button';
-import { PasswrodInput } from '../../../components/PasswordInput';
+import { PasswordInput } from '../../../components/PasswordInput';
 import { Container, Header, Steps, Title, SubTitle, Form, FormTitle } from './styles';
 import api from '../../../services/api';
 
@@ -71,8 +71,8 @@ export const SecondStep: React.FC = () => {
           <Form>
             <FormTitle>2. Senhas</FormTitle>
 
-            <PasswrodInput iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
-            <PasswrodInput
+            <PasswordInput iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
+            <PasswordInput
               iconName="lock"
               placeholder="Repetir senha"
               value={passwordConfirm}

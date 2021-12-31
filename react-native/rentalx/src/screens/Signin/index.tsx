@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import Button from '../../components/Button';
 import { Input } from '../../components/Input';
-import { PasswrodInput } from '../../components/PasswordInput';
+import { PasswordInput } from '../../components/PasswordInput';
 import { useAuth } from '../../hook/auth';
 import { Container, Header, Title, SubTitle, Footer, Form } from './styles';
 
@@ -64,7 +64,7 @@ export const Signin: React.FC = () => {
               onChangeText={setEmail}
             />
 
-            <PasswrodInput iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
+            <PasswordInput iconName="lock" placeholder="Senha" value={password} onChangeText={setPassword} />
           </Form>
 
           <Footer>
