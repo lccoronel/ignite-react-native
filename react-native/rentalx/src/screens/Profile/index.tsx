@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import * as ImagePicker from 'expo-image-picker';
 
 import BackButton from '../../components/BackButton';
 import { Input } from '../../components/Input';
@@ -31,6 +32,22 @@ export const Profile: React.FC = () => {
   const { user } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState('');
+  const [driverLicense, setDriverLicense] = useState('');
+
+  async function handleSelectAvatar() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result.cancelled) return;
+
+    if (result.uri) setAvatar(result.uri);
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -47,8 +64,9 @@ export const Profile: React.FC = () => {
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/54275445?v=4' }} />
-              <PhotoButton>
+              {!!avatar && <Photo source={{ uri: avatar }} />}
+
+              <PhotoButton onPress={handleSelectAvatar}>
                 <Feather name="camera" size={24} color={colors.shape} />
               </PhotoButton>
             </PhotoContainer>
@@ -67,13 +85,20 @@ export const Profile: React.FC = () => {
 
             {option === 'dataEdit' ? (
               <Section>
-                <Input iconName="user" placeholder="Nome" autoCorrect={false} defaultValue={user.name} />
+                <Input
+                  iconName="user"
+                  placeholder="Nome"
+                  autoCorrect={false}
+                  defaultValue={user.name}
+                  onChangeText={setName}
+                />
                 <Input iconName="mail" editable={false} defaultValue={user.email} />
                 <Input
                   iconName="credit-card"
                   placeholder="CNH"
                   keyboardType="numeric"
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
             ) : (
