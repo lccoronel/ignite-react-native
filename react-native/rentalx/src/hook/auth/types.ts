@@ -16,4 +16,5 @@ export interface ISigninCredentials {
 export interface IAuthContextData {
   user: IUser;
   signIn: (credentials: ISigninCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
 }

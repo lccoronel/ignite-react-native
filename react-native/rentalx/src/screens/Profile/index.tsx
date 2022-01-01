@@ -29,7 +29,7 @@ import {
 export const Profile: React.FC = () => {
   const { colors } = useTheme();
   const { goBack } = useNavigation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
@@ -58,7 +58,7 @@ export const Profile: React.FC = () => {
               <BackButton color={colors.shape} onPress={goBack} />
               <HeaderTitle>Editar perfil</HeaderTitle>
 
-              <LogountButton>
+              <LogountButton onPress={signOut}>
                 <Feather name="power" size={24} color={colors.shape} />
               </LogountButton>
             </HeaderTop>

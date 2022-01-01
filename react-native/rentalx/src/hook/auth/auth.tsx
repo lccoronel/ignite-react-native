@@ -18,7 +18,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       .fetch()
       .then(response => {
         if (response.length) {
-          const userData = response[1]._raw as unknown as IUser;
+          const userData = response[0]._raw as unknown as IUser;
           api.defaults.headers!.authorization = `Bearer ${userData.token}`;
           setData(userData);
         }
@@ -50,5 +50,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user: data, signIn }}>{children}</AuthContext.Provider>;
+  async function signOut() {
+    try {
+      const userCollection = database.get<ModelUser>('users');
+      await database.write(async () => {
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.destroyPermanently();
+      });
+
+      setData({} as IUser);
+    } catch (error) {
+      throw new Error('error');
+    }
+  }
+
+  return <AuthContext.Provider value={{ user: data, signIn, signOut }}>{children}</AuthContext.Provider>;
 };
