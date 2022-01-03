@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
+import { useNetInfo } from '@react-native-community/netinfo';
 import LoadAnimation from '../../components/LoadAnimation';
 import Logo from '../../assets/logo.svg';
 import Car from '../../components/Car';
@@ -22,12 +23,39 @@ import { Container, Header, TotalCars, CarList, MyCarsButton } from './styles';
 export const Home: React.FC = () => {
   const { navigate } = useNavigation();
   const { colors } = useTheme();
+  const netInfo = useNetInfo();
 
   const [cars, setCars] = useState<ICarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
   const positionY = useSharedValue(0);
   const positionX = useSharedValue(0);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    try {
+      api.get('cars').then(response => {
+        if (isMounted) setCars(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (isMounted) setLoading(false);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (netInfo.isConnected) {
+      Alert.alert('Você está online');
+    } else {
+      Alert.alert('Você está offline');
+    }
+  }, [netInfo.isConnected]);
 
   const myCarsButtonStyle = useAnimatedStyle(() => {
     return {
@@ -49,24 +77,6 @@ export const Home: React.FC = () => {
       positionY.value = withSpring(0);
     },
   });
-
-  useEffect(() => {
-    let isMounted = true;
-
-    try {
-      api.get('cars').then(response => {
-        if (isMounted) setCars(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      if (isMounted) setLoading(false);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   return (
     <Container>
