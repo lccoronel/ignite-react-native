@@ -82,6 +82,13 @@ export const Profile: React.FC = () => {
     }
   }
 
+  async function handleSignOut() {
+    Alert.alert('Tem certeza?', 'Lembre-se, que se você sair, irá precisar de internet para entrar novamente', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Sair', onPress: signOut },
+    ]);
+  }
+
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -91,7 +98,7 @@ export const Profile: React.FC = () => {
               <BackButton color={colors.shape} onPress={goBack} />
               <HeaderTitle>Editar perfil</HeaderTitle>
 
-              <LogountButton onPress={signOut}>
+              <LogountButton onPress={handleSignOut}>
                 <Feather name="power" size={24} color={colors.shape} />
               </LogountButton>
             </HeaderTop>
