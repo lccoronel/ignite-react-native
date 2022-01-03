@@ -1,11 +1,15 @@
 import React from 'react';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
-import { ICarProps } from './types';
-
+import { Car as ModelCar } from '../../database/models/car';
 import { Container, Details, Brand, Name, About, Rent, Period, Price, Type, CarImage } from './styles';
 
-const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
+interface ICarProps extends RectButtonProps {
+  data: ModelCar;
+}
+
+export const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
   const MotorIcon = getAccessoryIcon(data.fuel_type);
 
   return (
@@ -30,5 +34,3 @@ const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
     </Container>
   );
 };
-
-export default Car;

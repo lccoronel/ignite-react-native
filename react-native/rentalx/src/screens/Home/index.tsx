@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -11,13 +11,15 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-
+import { synchronize } from '@nozbe/watermelondb/sync';
 import { useNetInfo } from '@react-native-community/netinfo';
+
+import { database } from '../../database';
+import { Car as ModelCar } from '../../database/models/car';
 import LoadAnimation from '../../components/LoadAnimation';
 import Logo from '../../assets/logo.svg';
-import Car from '../../components/Car';
+import { Car } from '../../components/Car';
 import api from '../../services/api';
-import { ICarDTO } from '../../dtos/CarDTO';
 import { Container, Header, TotalCars, CarList, MyCarsButton } from './styles';
 
 export const Home: React.FC = () => {
@@ -25,7 +27,7 @@ export const Home: React.FC = () => {
   const { colors } = useTheme();
   const netInfo = useNetInfo();
 
-  const [cars, setCars] = useState<ICarDTO[]>([]);
+  const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
 
   const positionY = useSharedValue(0);
@@ -35,9 +37,13 @@ export const Home: React.FC = () => {
     let isMounted = true;
 
     try {
-      api.get('cars').then(response => {
-        if (isMounted) setCars(response.data);
-      });
+      const carCollection = database.get<ModelCar>('cars');
+      carCollection
+        .query()
+        .fetch()
+        .then(response => {
+          if (isMounted) setCars(response);
+        });
     } catch (error) {
       console.log(error);
     } finally {
@@ -50,10 +56,8 @@ export const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (netInfo.isConnected) {
-      Alert.alert('Você está online');
-    } else {
-      Alert.alert('Você está offline');
+    if (netInfo.isConnected === true) {
+      offlineSynchronize();
     }
   }, [netInfo.isConnected]);
 
@@ -77,6 +81,22 @@ export const Home: React.FC = () => {
       positionY.value = withSpring(0);
     },
   });
+
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
+        const { changes, latestVersion } = response.data;
+
+        return { changes, timestamp: latestVersion };
+      },
+      pushChanges: async ({ changes }) => {
+        const { user } = changes;
+        await api.post('/users/sync', user);
+      },
+    });
+  }
 
   return (
     <Container>
