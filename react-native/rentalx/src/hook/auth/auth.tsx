@@ -64,5 +64,23 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user: data, signIn, signOut }}>{children}</AuthContext.Provider>;
+  async function updateUser(user: IUser) {
+    try {
+      const userCollection = database.get<ModelUser>('users');
+      await database.write(async () => {
+        const userSelected = await userCollection.find(data.id);
+        await userSelected.update(userData => {
+          userData.name = user.name;
+          userData.driver_license = user.driver_license;
+          userData.avatar = user.avatar;
+        });
+      });
+
+      setData(user);
+    } catch (error) {
+      throw new Error('error');
+    }
+  }
+
+  return <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser }}>{children}</AuthContext.Provider>;
 };
