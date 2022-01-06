@@ -80,8 +80,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       setData(user);
     } catch (error) {
-      console.log(error);
-
       throw new Error('error');
     }
   }

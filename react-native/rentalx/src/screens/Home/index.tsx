@@ -25,7 +25,7 @@ import { Container, Header, TotalCars, CarList, MyCarsButton } from './styles';
 export const Home: React.FC = () => {
   const { navigate } = useNavigation();
   const { colors } = useTheme();
-  const netInfo = useNetInfo();
+  const { isConnected } = useNetInfo();
 
   const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,10 +56,23 @@ export const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (netInfo.isConnected === true) {
-      offlineSynchronize();
+    if (isConnected === true) {
+      synchronize({
+        database,
+        pullChanges: async ({ lastPulledAt }) => {
+          const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
+          const { changes, latestVersion } = response.data;
+
+          return { changes, timestamp: latestVersion };
+        },
+        pushChanges: async ({ changes }) => {
+          const { users } = changes;
+
+          await api.post('/users/sync', users).catch(console.log);
+        },
+      }).then();
     }
-  }, [netInfo.isConnected]);
+  }, [isConnected]);
 
   const myCarsButtonStyle = useAnimatedStyle(() => {
     return {
@@ -81,22 +94,6 @@ export const Home: React.FC = () => {
       positionY.value = withSpring(0);
     },
   });
-
-  async function offlineSynchronize() {
-    await synchronize({
-      database,
-      pullChanges: async ({ lastPulledAt }) => {
-        const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
-        const { changes, latestVersion } = response.data;
-
-        return { changes, timestamp: latestVersion };
-      },
-      pushChanges: async ({ changes }) => {
-        const { user } = changes;
-        await api.post('/users/sync', user);
-      },
-    });
-  }
 
   return (
     <Container>
