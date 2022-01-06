@@ -5,7 +5,7 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from './styles/theme';
-import Routes from './routes';
+import { Routes } from './routes';
 import { AppProvider } from './hook';
 
 const App: React.FC = () => {
