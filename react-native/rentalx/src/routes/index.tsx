@@ -3,11 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useAuth } from '../hook/auth';
 import { AppTabRoutes } from './app.tab.routes';
 import { AuthRoutes } from './auth.routes';
+import LoadAnimation from '../components/LoadAnimation';
 
-const Routes: React.FC = () => {
-  const { user } = useAuth();
+export const Routes: React.FC = () => {
+  const { user, loading } = useAuth();
 
-  return <NavigationContainer>{user.id ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>;
+  return loading ? (
+    <LoadAnimation />
+  ) : (
+    <NavigationContainer>{user.id ? <AppTabRoutes /> : <AuthRoutes />}</NavigationContainer>
+  );
 };
-
-export default Routes;

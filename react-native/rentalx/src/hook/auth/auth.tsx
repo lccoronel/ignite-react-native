@@ -10,6 +10,7 @@ export const AuthContext = createContext<IAuthContextData>({} as IAuthContextDat
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<IUser>({} as IUser);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userCollection = database.get<ModelUser>('users');
@@ -22,7 +23,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           api.defaults.headers!.authorization = `Bearer ${userData.token}`;
           setData(userData);
         }
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   async function signIn({ email, password }: ISigninCredentials) {
@@ -78,9 +80,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       setData(user);
     } catch (error) {
+      console.log(error);
+
       throw new Error('error');
     }
   }
 
-  return <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser, loading }}>{children}</AuthContext.Provider>
+  );
 };

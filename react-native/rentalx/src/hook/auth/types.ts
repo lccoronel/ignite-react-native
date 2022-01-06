@@ -15,6 +15,7 @@ export interface ISigninCredentials {
 
 export interface IAuthContextData {
   user: IUser;
+  loading: boolean;
   signIn: (credentials: ISigninCredentials) => Promise<void>;
   signOut: () => Promise<void>;
   updateUser(user: IUser): Promise<void>;
