@@ -1,5 +1,5 @@
-import { ICarDTO } from '../../dtos/CarDTO';
+import { Car } from '../../database/models/car';
 
 export interface ICarDetaisParams {
-  car: ICarDTO;
+  car: Car;
 }

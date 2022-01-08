@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Animated, {
   Extrapolate,
@@ -7,17 +8,18 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-
-import { StatusBar } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { useTheme } from 'styled-components';
+import { useNetInfo } from '@react-native-community/netinfo';
+
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
 import Accessory from '../../components/Accessory';
 import Button from '../../components/Button';
 import { ICarDetaisParams } from './types';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
-
+import { ICarDTO } from '../../dtos/CarDTO';
+import api from '../../services/api';
 import {
   Container,
   Header,
@@ -34,28 +36,33 @@ import {
   Footer,
 } from './styles';
 
-const CarDetails: React.FC = () => {
+export const CarDetails: React.FC = () => {
   const { navigate, goBack } = useNavigation();
   const { colors } = useTheme();
-  const route = useRoute();
-  const { car } = route.params as ICarDetaisParams;
+  const { isConnected } = useNetInfo();
+  const { params } = useRoute();
+  const { car } = params as ICarDetaisParams;
 
+  const [carUpdated, setCarUpdated] = useState<ICarDTO>({} as ICarDTO);
   const scrollY = useSharedValue(0);
+
   const scrollHandler = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y;
   });
 
   const headerStyleAnimation = useAnimatedStyle(() => {
-    return {
-      height: interpolate(scrollY.value, [0, 200], [200, 70], Extrapolate.CLAMP),
-    };
+    return { height: interpolate(scrollY.value, [0, 200], [200, 70], Extrapolate.CLAMP) };
   });
 
   const sliderStyleAnimation = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(scrollY.value, [0, 50, 200], [1, 0.5, 0], Extrapolate.CLAMP),
-    };
+    return { opacity: interpolate(scrollY.value, [0, 50, 200], [1, 0.5, 0], Extrapolate.CLAMP) };
   });
+
+  useEffect(() => {
+    if (isConnected === true) {
+      api.get(`/cars/${car.id}`).then(response => setCarUpdated(response.data));
+    }
+  }, [isConnected, car.id]);
 
   return (
     <Container>
@@ -77,7 +84,7 @@ const CarDetails: React.FC = () => {
         </Header>
 
         <CarImages style={sliderStyleAnimation}>
-          <ImageSlider imageUrl={car.photos} />
+          <ImageSlider imageUrl={carUpdated.photos || [{ id: car.thumbnail, photo: car.thumbnail }]} />
         </CarImages>
       </Animated.View>
 
@@ -98,26 +105,24 @@ const CarDetails: React.FC = () => {
 
           <Rent>
             <Period>{car.period}</Period>
-            <Price>RS {car.price}</Price>
+            <Price>RS {isConnected === true ? car.price : '...'}</Price>
           </Rent>
         </Detail>
 
-        <Accessories>
-          {car.accessories.map(accessory => (
-            <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
-          ))}
-        </Accessories>
+        {carUpdated.accessories && (
+          <Accessories>
+            {carUpdated.accessories.map(accessory => (
+              <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
+            ))}
+          </Accessories>
+        )}
 
-        <About>{car.about}</About>
-        <About>{car.about}</About>
         <About>{car.about}</About>
       </Animated.ScrollView>
 
       <Footer>
-        <Button title="Confirmar" onPress={() => navigate('Schedulling', { car })} />
+        <Button title="Confirmar" onPress={() => navigate('Schedulling', { car })} enabled={isConnected === true} />
       </Footer>
     </Container>
   );
 };
-
-export default CarDetails;
