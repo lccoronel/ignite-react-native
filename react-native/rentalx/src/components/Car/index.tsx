@@ -1,5 +1,6 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { Car as ModelCar } from '../../database/models/car';
@@ -10,6 +11,7 @@ interface ICarProps extends RectButtonProps {
 }
 
 export const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
+  const { isConnected } = useNetInfo();
   const MotorIcon = getAccessoryIcon(data.fuel_type);
 
   return (
@@ -21,7 +23,7 @@ export const Car: React.FC<ICarProps> = ({ data, ...rest }) => {
         <About>
           <Rent>
             <Period>{data.period}</Period>
-            <Price>{`R$ ${data.price}`}</Price>
+            <Price>{`R$ ${isConnected === true ? data.price : '...'}`}</Price>
           </Rent>
 
           <Type>
