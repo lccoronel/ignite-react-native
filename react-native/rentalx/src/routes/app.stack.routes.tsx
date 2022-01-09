@@ -6,7 +6,7 @@ import { CarDetails } from '../screens/CarDetails';
 import Schedulling from '../screens/Schedulling';
 import { SchedullingDetails } from '../screens/SchedullingDetails';
 import { Confirmation } from '../screens/Confirmation';
-import Mycars from '../screens/Mycars';
+import { Mycars } from '../screens/Mycars';
 
 const { Navigator, Screen } = createStackNavigator();
 

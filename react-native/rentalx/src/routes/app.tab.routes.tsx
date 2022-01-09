@@ -9,7 +9,7 @@ import PeopleSvg from '../assets/people.svg';
 
 import { Home } from '../screens/Home';
 import { Profile } from '../screens/Profile';
-import Mycars from '../screens/Mycars';
+import { Mycars } from '../screens/Mycars';
 import { AppStackRoutes } from './app.stack.routes';
 
 const { Navigator, Screen } = createBottomTabNavigator();

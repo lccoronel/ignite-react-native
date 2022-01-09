@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
+import { format, parseISO } from 'date-fns';
 import BackButton from '../../components/BackButton';
-import Car from '../../components/Car';
+import { Car } from '../../components/Car';
 import api from '../../services/api';
-import { ICarProps } from './types';
+import { Car as ModelCar } from '../../database/models/car';
 import {
   Container,
   Header,
@@ -24,18 +25,36 @@ import {
   CarFooterDate,
 } from './styles';
 
-const Mycars: React.FC = () => {
+interface ICarProps {
+  id: string;
+  car: ModelCar;
+  start_date: string;
+  end_date: string;
+}
+
+export const Mycars: React.FC = () => {
   const { colors } = useTheme();
   const { goBack } = useNavigation();
+  const screenIsFocused = useIsFocused();
 
   const [cars, setCars] = useState<ICarProps[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
-      .get('/schedules_byuser?user_id=1')
+      .get('/rentals')
       .then(response => {
-        setCars(response.data);
+        const rentals: ICarProps[] = response.data;
+
+        const formattedRentals = rentals.map(rental => {
+          return {
+            id: rental.id,
+            car: rental.car,
+            start_date: format(parseISO(rental.start_date), 'dd/MM/yyyy'),
+            end_date: format(parseISO(rental.end_date), 'dd/MM/yyyy'),
+          };
+        });
+        setCars(formattedRentals);
       })
       .catch(error => {
         console.log(error);
@@ -43,7 +62,7 @@ const Mycars: React.FC = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [screenIsFocused]);
 
   return (
     <Container>
@@ -63,7 +82,7 @@ const Mycars: React.FC = () => {
         <Content>
           <Appointments>
             <AppointmentsTitle>Agendamentos feitos</AppointmentsTitle>
-            <AppointmentsQuantity>05</AppointmentsQuantity>
+            <AppointmentsQuantity>{cars.length}</AppointmentsQuantity>
           </Appointments>
 
           <FlatList
@@ -76,9 +95,9 @@ const Mycars: React.FC = () => {
                 <CarFooter>
                   <CarFooterTitle>Período</CarFooterTitle>
                   <CarFooterPeriod>
-                    <CarFooterDate>{item.startDate}</CarFooterDate>
+                    <CarFooterDate>{item.start_date}</CarFooterDate>
                     <AntDesign name="arrowright" size={20} color={colors.title} style={{ marginHorizontal: 10 }} />
-                    <CarFooterDate>{item.endDate}</CarFooterDate>
+                    <CarFooterDate>{item.end_date}</CarFooterDate>
                   </CarFooterPeriod>
                 </CarFooter>
               </CarWrapper>
@@ -89,5 +108,3 @@ const Mycars: React.FC = () => {
     </Container>
   );
 };
-
-export default Mycars;
