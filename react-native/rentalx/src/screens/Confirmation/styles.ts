@@ -33,5 +33,5 @@ export const Message = styled.Text`
 export const Footer = styled.View`
   width: 100%;
   align-items: center;
-  margin: 80px 0;
+  margin: 40px 0;
 `;

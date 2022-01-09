@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { format } from 'date-fns';
 
+import { useNetInfo } from '@react-native-community/netinfo';
 import BackButton from '../../components/BackButton';
-import ImageSlider from '../../components/ImageSlider';
-import Accessory from '../../components/Accessory';
+import { ImageSlider } from '../../components/ImageSlider';
+import { Accessory } from '../../components/Accessory';
 import Button from '../../components/Button';
 
 import { IRentalPeriod, ISchedullingDetailsParams } from './types';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { getPlatformDate } from '../../utils/getPlatfomDate';
 import api from '../../services/api';
-
+import { ICarDTO } from '../../dtos/CarDTO';
 import {
   Container,
   Header,
@@ -41,16 +42,26 @@ import {
   RentalPriceQuota,
   RentalPriceTotal,
 } from './styles';
+import { useAuth } from '../../hook/auth';
 
-const SchedullingDetails: React.FC = () => {
+export const SchedullingDetails: React.FC = () => {
+  const { user } = useAuth();
   const { colors } = useTheme();
   const { navigate, goBack } = useNavigation();
+  const { isConnected } = useNetInfo();
   const route = useRoute();
   const { car, dates } = route.params as ISchedullingDetailsParams;
 
   const [loading, setLoading] = useState(false);
   const [rentalPeriod, setRentalPeriod] = useState({} as IRentalPeriod);
-  const carRentTotal = Number(dates.length * car.rent.price);
+  const [carUpdated, setCarUpdated] = useState<ICarDTO>({} as ICarDTO);
+  const carRentTotal = Number(dates.length * car.price);
+
+  useEffect(() => {
+    if (isConnected === true) {
+      api.get(`/cars/${car.id}`).then(response => setCarUpdated(response.data));
+    }
+  }, [isConnected, car.id]);
 
   useEffect(() => {
     setRentalPeriod({
@@ -60,39 +71,43 @@ const SchedullingDetails: React.FC = () => {
   }, [dates]);
 
   async function handleNavigate() {
-    const response = await api.get(`/schedules_bycars/${car.id}`);
-    const unavailable_dates = [...response.data.unavailable_dates, ...dates];
+    try {
+      await api.post(
+        'rentals',
+        {
+          user_id: user.id,
+          car_id: car.id,
+          start_date: new Date(dates[0]),
+          end_date: new Date(dates[dates.length - 1]),
+          total: carRentTotal,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        },
+      );
 
-    await api.post('schedules_byuser', {
-      user_id: 1,
-      car,
-      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
-    });
-
-    api
-      .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
-      .then(() =>
-        navigate('Confirmation', {
-          nextScreen: 'Home',
-          title: 'Carro alugado!',
-          message: 'Agora você só precisa ir\nté uma concencionária da RENTX\npegar seu automóvel',
-        }),
-      )
-      .catch(() => {
-        setLoading(false);
-        Alert.alert('Não foi possivel confirmar agendamento');
+      navigate('Confirmation', {
+        nextScreen: 'Home',
+        title: 'Carro alugado!',
+        message: 'Agora você só precisa ir\nté uma concencionária da RENTX\npegar seu automóvel',
       });
+    } catch (error) {
+      Alert.alert('Não foi possivel confirmar agendamento');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <Container>
+      <StatusBar barStyle="dark-content" />
+
       <Header>
         <BackButton onPress={goBack} />
       </Header>
 
       <CarImages>
-        <ImageSlider imageUrl={car.photos} />
+        <ImageSlider imageUrl={carUpdated.photos || [{ id: car.thumbnail, photo: car.thumbnail }]} />
       </CarImages>
 
       <Content>
@@ -103,16 +118,18 @@ const SchedullingDetails: React.FC = () => {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>RS {car.rent.price}</Price>
+            <Period>{car.period}</Period>
+            <Price>RS {car.price}</Price>
           </Rent>
         </Detail>
 
-        <Accessories>
-          {car.accessories.map(accessory => (
-            <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
-          ))}
-        </Accessories>
+        {carUpdated.accessories && (
+          <Accessories>
+            {carUpdated.accessories.map(accessory => (
+              <Accessory icon={getAccessoryIcon(accessory.type)} name={accessory.name} key={accessory.type} />
+            ))}
+          </Accessories>
+        )}
 
         <RentalPeriod>
           <CalendarIcon>
@@ -136,7 +153,7 @@ const SchedullingDetails: React.FC = () => {
           <RebtalPriceLabel>TOTAL</RebtalPriceLabel>
           <RentalPriceDetails>
             <RentalPriceQuota>
-              R$ {car.rent.price} x {dates.length} diárias
+              R$ {car.price} x {dates.length} diárias
             </RentalPriceQuota>
             <RentalPriceTotal>R$ {carRentTotal}</RentalPriceTotal>
           </RentalPriceDetails>
@@ -155,5 +172,3 @@ const SchedullingDetails: React.FC = () => {
     </Container>
   );
 };
-
-export default SchedullingDetails;
