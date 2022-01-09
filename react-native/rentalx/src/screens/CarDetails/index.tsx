@@ -13,7 +13,7 @@ import { useTheme } from 'styled-components';
 import { useNetInfo } from '@react-native-community/netinfo';
 
 import BackButton from '../../components/BackButton';
-import ImageSlider from '../../components/ImageSlider';
+import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
 import Button from '../../components/Button';
 import { ICarDetaisParams } from './types';

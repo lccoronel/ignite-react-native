@@ -5,7 +5,7 @@ import { IChangeImageProps, IImageSlider } from './types';
 import { Container, ImageIndexes, CarImageWraooer, CarImage } from './styles';
 import { Bullet } from '../Bullet';
 
-const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
+export const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
   const [indexImage, setIndexImage] = useState(0);
 
   const indexChange = useRef((info: IChangeImageProps) => {
@@ -35,5 +35,3 @@ const ImageSlider: React.FC<IImageSlider> = ({ imageUrl }) => {
     </Container>
   );
 };
-
-export default ImageSlider;
