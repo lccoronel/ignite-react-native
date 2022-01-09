@@ -14,7 +14,7 @@ import { useNetInfo } from '@react-native-community/netinfo';
 
 import BackButton from '../../components/BackButton';
 import ImageSlider from '../../components/ImageSlider';
-import Accessory from '../../components/Accessory';
+import { Accessory } from '../../components/Accessory';
 import Button from '../../components/Button';
 import { ICarDetaisParams } from './types';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
@@ -34,6 +34,7 @@ import {
   About,
   Accessories,
   Footer,
+  OfflineInfo,
 } from './styles';
 
 export const CarDetails: React.FC = () => {
@@ -122,6 +123,10 @@ export const CarDetails: React.FC = () => {
 
       <Footer>
         <Button title="Confirmar" onPress={() => navigate('Schedulling', { car })} enabled={isConnected === true} />
+
+        {isConnected === false && (
+          <OfflineInfo>Conecte-se a internet para ver mais detalhes e agendar seu carro</OfflineInfo>
+        )}
       </Footer>
     </Container>
   );
