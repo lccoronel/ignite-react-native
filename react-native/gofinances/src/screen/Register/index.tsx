@@ -129,6 +129,7 @@ const Register: React.FC = () => {
             </TransactionTypes>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleSelectCategoryModal}
             />
@@ -137,7 +138,11 @@ const Register: React.FC = () => {
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen} animationType="slide">
+        <Modal
+          visible={categoryModalOpen}
+          animationType="slide"
+          testID="modal-category"
+        >
           <CategorySelect
             closeSelectCategory={handleSelectCategoryModal}
             category={category}
