@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Text, TextInput, View, ScrollView } from 'react-native';
 
 import { FriendsList } from '../../components/FriendsList';
@@ -12,8 +12,21 @@ export const Home: React.FC = () => {
     const response = await fetch(`http://10.0.0.192:3333/friends?q=${name}`);
     const data: any = await response.json();
 
-    setFriends(data);
+    const formattedDate = data.map((item: any) => {
+      return {
+        id: item.id,
+        name: item.name,
+        likes: item.likes,
+        online: `${new Date().getHours()}:${new Date().getMinutes()}`,
+      };
+    });
+
+    setFriends(formattedDate);
   }
+
+  const handleFollow = useCallback(() => {
+    console.log('unfollow user');
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -23,9 +36,7 @@ export const Home: React.FC = () => {
 
       <Button title="Buscar" onPress={handleSearch} />
 
-      <ScrollView style={styles.friendsList}>
-        <FriendsList data={friends} />
-      </ScrollView>
+      <FriendsList data={friends} unFollow={handleFollow} />
     </View>
   );
 };
